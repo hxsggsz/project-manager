@@ -32,13 +32,13 @@ export const Input = ({
       )}
       <input
         {...props}
-        className="w-full pl-2 text-2xl outline-none placeholder:text-slate-600"
+        className="w-full pl-2 text-xl outline-none placeholder:text-slate-600"
       />
       {isPassword && (
         <div
           data-cy="button-password"
           className="cursor-pointer"
-          onClick={() => setIsShowPassword!((prev) => prev && !prev)}
+          onClick={() => setIsShowPassword!((prev) => !prev)}
         >
           {isShowPassword ? (
             <Lock size={38} className="p-2" weight="bold" />

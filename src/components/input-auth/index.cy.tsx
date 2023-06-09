@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import React from 'react'
-import { Input } from './input'
+import { Input } from '.'
 
 describe('input component', () => {
   it('should render the user input', () => {

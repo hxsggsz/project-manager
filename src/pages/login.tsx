@@ -41,7 +41,9 @@ export default function LogIn() {
             <GithubLogo size={32} />
           </AuthButtons>
 
-          <AuthButtons href={``}>
+          <AuthButtons
+            href={`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77qzsrlkxux3tr&redirect_uri=http://localhost:3000/api/auth/linkedin&state=wdadwdawdsadegrgygdawd&scope=openid%20profile%20email`}
+          >
             <LinkedinLogo size={32} />
           </AuthButtons>
         </div>

@@ -5,11 +5,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export default async function GET(req: NextApiRequest, res: NextApiResponse) {
   const { code } = req.query
 
-  const registerResponse = await api.post('/github', { code })
+  const registerResponse = await api.post('/linkedin', { code })
 
   const { token } = registerResponse.data
 
-  setCookie('tokenGithub', token, {
+  setCookie('tokenLinkedin', token, {
     req,
     res,
     path: '/',

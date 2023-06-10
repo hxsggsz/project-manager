@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import { useState } from 'react'
-import { Input } from '@/components/input-auth'
+import { Button } from './components/button'
+import { Input } from './components/input-auth'
+import { AuthButtons } from './components/auth-buttons'
 import { GithubLogo, LinkedinLogo } from '@phosphor-icons/react'
-import { Button } from '@/components/button'
-import { AuthButtons } from '@/components/auth-buttons'
 
 export default function LogIn() {
   const [isShowPassword, setIsShowPassword] = useState(true)
+
   return (
     <main className="flex h-screen items-center justify-between p-28 max-lg:justify-center max-lg:p-4 max-lg:pt-12">
       <Image
@@ -34,11 +35,13 @@ export default function LogIn() {
         </div>
 
         <div className="flex gap-4">
-          <AuthButtons>
+          <AuthButtons
+            href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`}
+          >
             <GithubLogo size={32} />
           </AuthButtons>
 
-          <AuthButtons>
+          <AuthButtons href={``}>
             <LinkedinLogo size={32} />
           </AuthButtons>
         </div>

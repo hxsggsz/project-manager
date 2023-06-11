@@ -11,6 +11,10 @@ h1 {
   font-weight: 700;
 }
 
-p, a, span {
+p {
   font-size: 24px;
+}
+
+a {
+  text-decoration: none;
 }

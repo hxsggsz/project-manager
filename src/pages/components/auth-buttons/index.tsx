@@ -9,7 +9,10 @@ export const AuthButtons = ({
   href: string
 }) => {
   return (
-    <Link href={href} className="rounded-full bg-violet-main p-2 text-white">
+    <Link
+      href={href}
+      className="rounded-full bg-violet-main p-2 text-white transition-all duration-500 hover:scale-110 hover:bg-violet-800"
+    >
       {children}
     </Link>
   )

@@ -5,15 +5,19 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export default async function GET(req: NextApiRequest, res: NextApiResponse) {
   const { code } = req.query
 
-  const registerResponse = await api.post('/github', { code })
+  try {
+    const registerResponse = await api.post('/github', { code })
 
-  const { token } = registerResponse.data
+    const { token } = registerResponse.data
 
-  setCookie('tokenGithub', token, {
-    req,
-    res,
-    path: '/',
-  })
+    setCookie('token', token, {
+      req,
+      res,
+      path: '/',
+    })
 
-  return res.redirect('/login')
+    return res.redirect('/dashboard')
+  } catch (error: any) {
+    console.log(error.response.data.message)
+  }
 }

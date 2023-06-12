@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 export default function SignUp() {
   const router = useRouter()
+  const [IsLoading, setIsLoading] = useState(false)
   const [signUpError, setSignUpError] = useState('')
   const [isShowPassword, setIsShowPassword] = useState(true)
 
@@ -67,10 +68,15 @@ export default function SignUp() {
 
   async function onSubmit(data: SignUpTypes) {
     try {
+      setIsLoading(true)
       setSignUpError('')
-      await api.post('signup', data)
-      router.replace('/login')
+      const signUpResponse = await api.post('/signup', data)
+      const { token } = signUpResponse.data
+
+      setIsLoading(false)
+      router.replace(`/api/auth/login?token=${token}`)
     } catch (error: any) {
+      setIsLoading(false)
       console.error('signup api', error)
       setSignUpError(error.response.data.message)
     }
@@ -110,35 +116,37 @@ export default function SignUp() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex h-full flex-col items-center gap-4"
+          className="flex h-full max-w-lg flex-col items-center gap-4"
         >
           <h1 className="whitespace-nowrap">WELCOME BACK</h1>
           <p className="text-center">welcome back! please enter your details</p>
 
-          <div className="w-full text-start">
-            <Input
-              type="text"
-              {...register('name')}
-              placeholder="your best name here"
-            />
+          <div className="flex w-full gap-4 text-start max-sm:flex-col">
+            <div>
+              <Input
+                type="text"
+                {...register('name')}
+                placeholder="your best name here"
+              />
 
-            {errors.name && (
-              <span className="pl-2 text-red-500">{errors.name.message}</span>
-            )}
-          </div>
+              {errors.name && (
+                <span className="pl-2 text-red-500">{errors.name.message}</span>
+              )}
+            </div>
 
-          <div className="w-full text-start">
-            <Input
-              type="text"
-              {...register('username')}
-              placeholder="your best username here"
-            />
+            <div className="">
+              <Input
+                type="text"
+                {...register('username')}
+                placeholder="your best username"
+              />
 
-            {errors.username && (
-              <span className="pl-2 text-red-500">
-                {errors.username.message}
-              </span>
-            )}
+              {errors.username && (
+                <span className="pl-2 text-red-500">
+                  {errors.username.message}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="w-full text-start">
@@ -190,18 +198,19 @@ export default function SignUp() {
 
           {signUpError && <span className="text-red-500">{signUpError}</span>}
 
-          <Button disabled={handleSubmitDisable} type="submit">
+          <Button
+            type="submit"
+            isLoading={IsLoading}
+            disabled={handleSubmitDisable}
+          >
             Sign Up
           </Button>
-          <span>
+          <Link href="/login">
             Already have an account?{' '}
-            <Link
-              className="font-semibold text-violet-main underline hover:opacity-80"
-              href="/login"
-            >
+            <span className="font-semibold text-violet-main underline hover:opacity-80">
               Log In
-            </Link>
-          </span>
+            </span>
+          </Link>
         </form>
       </main>
     </>

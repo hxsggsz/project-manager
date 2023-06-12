@@ -14,6 +14,7 @@ import { GithubLogo, LinkedinLogo } from '@phosphor-icons/react'
 
 export default function LogIn() {
   const router = useRouter()
+  const [IsLoading, setIsLoading] = useState(false)
   const [loginError, setLoginError] = useState('')
   const [isShowPassword, setIsShowPassword] = useState(true)
 
@@ -37,12 +38,15 @@ export default function LogIn() {
 
   async function onSubmit(data: LoginTypes) {
     try {
+      setIsLoading(true)
       setLoginError('')
       const loginResponse = await api.post('/login', data)
       const { token } = loginResponse.data
 
-      router.replace(`http://localhost:3000/api/auth/login?token=${token}`)
+      setIsLoading(false)
+      router.replace(`/api/auth/login?token=${token}`)
     } catch (error: any) {
+      setIsLoading(false)
       console.error('signup api', error)
       setLoginError(error.response.data.message)
     }
@@ -76,7 +80,7 @@ export default function LogIn() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex h-full flex-col items-center gap-4"
+          className="flex h-full max-w-lg flex-col items-center gap-4"
         >
           <h1 className="whitespace-nowrap">WELCOME BACK</h1>
           <p className="text-center">welcome back! please enter your details</p>
@@ -131,18 +135,19 @@ export default function LogIn() {
 
           {loginError && <span className="text-red-500">{loginError}</span>}
 
-          <Button disabled={handleSubmitDisable} type="submit">
+          <Button
+            isLoading={IsLoading}
+            disabled={handleSubmitDisable}
+            type="submit"
+          >
             Log in
           </Button>
-          <span>
+          <Link href="/signup">
             Do not have an account?{' '}
-            <Link
-              className="font-semibold text-violet-main underline hover:opacity-80"
-              href="/signup"
-            >
+            <span className="font-semibold text-violet-main underline hover:opacity-80">
               Sign up
-            </Link>
-          </span>
+            </span>
+          </Link>
         </form>
       </main>
     </>

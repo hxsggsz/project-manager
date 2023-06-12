@@ -1,15 +1,14 @@
 import Image from 'next/image'
-import { CaretDown, CaretUp, X } from '@phosphor-icons/react'
-import * as Popover from '@radix-ui/react-popover'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { CaretDown, CaretUp } from '@phosphor-icons/react'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <header className="fixed left-0 top-0 flex w-screen justify-end border-[1px] border-slate-300 py-3 pr-4">
-      <Popover.Root onOpenChange={setIsOpen}>
-        <Popover.Trigger asChild>
+      <DropdownMenu.Root onOpenChange={setIsOpen}>
+        <DropdownMenu.Trigger asChild>
           <div className="flex cursor-pointer items-center gap-2">
             <Image
               width={50}
@@ -18,31 +17,33 @@ export const Header = () => {
               alt={`profile picture of`}
               className="pointer-events-none select-none rounded-full"
             />
-            <motion.span whileTap={{ rotate: 360 }}>
+            <span>
               {isOpen ? (
                 <CaretUp size={20} weight="bold" />
               ) : (
                 <CaretDown size={20} weight="bold" />
               )}
-            </motion.span>
+            </span>
           </div>
-        </Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Content
-            className="rounded border-[1px] border-slate-300 bg-white p-5"
-            sideOffset={5}
+        </DropdownMenu.Trigger>
+
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            className=" mr-6 min-w-[220px] rounded-md bg-slate-100 p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform]"
+            sideOffset={10}
           >
-            <p>wda</p>
-            <Popover.Close
-              className="absolute right-[5px] top-[5px] inline-flex h-[25px] w-[25px] cursor-pointer items-center justify-center rounded-full outline-none"
-              // aria-label="Close"
-            >
-              <X size={20} weight="bold" />
-            </Popover.Close>
-            <Popover.Arrow className="fill-white" />
-          </Popover.Content>
-        </Popover.Portal>
-      </Popover.Root>
+            <DropdownMenu.Item className="relative flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none hover:bg-violet-main hover:text-white">
+              My Profile
+            </DropdownMenu.Item>
+
+            <DropdownMenu.Item className="relative flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none hover:bg-violet-main hover:text-white data-[disabled]:pointer-events-none">
+              Exit
+            </DropdownMenu.Item>
+
+            <DropdownMenu.Arrow className="fill-white" />
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
     </header>
   )
 }

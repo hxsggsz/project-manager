@@ -8,6 +8,7 @@ export default async function GET(req: NextApiRequest, res: NextApiResponse) {
     req,
     res,
     path: '/',
+    maxAge: 2592000,
   })
 
   return res.redirect('/dashboard')

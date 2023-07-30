@@ -22,7 +22,7 @@
     "cookies-next": "^2.1.1",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
-    "framer-motion": "^10.12.16",
+    "framer-motion": "^10.15.0",
     "jwt-decode": "^3.1.2",
     "next": "13.4.4",
     "postcss": "8.4.24",

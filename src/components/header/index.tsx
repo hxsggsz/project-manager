@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { CaretDown, CaretUp } from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { UserProps } from '@/utils/types/dashboard'
+import Link from 'next/link'
 
 export const Header = ({ user }: UserProps) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -13,7 +14,7 @@ export const Header = ({ user }: UserProps) => {
           <div className="flex cursor-pointer items-center gap-2">
             <section>
               <h1 className="text-base font-normal">{user.name}</h1>
-              <p className=" text-right text-sm text-slate-400">
+              <p className=" text-right text-sm text-slate-500">
                 {user.username}
               </p>
             </section>
@@ -47,8 +48,8 @@ export const Header = ({ user }: UserProps) => {
               My Profile
             </DropdownMenu.Item>
 
-            <DropdownMenu.Item className="relative flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none hover:bg-violet-main hover:text-white data-[disabled]:pointer-events-none">
-              Exit
+            <DropdownMenu.Item className="relative flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none hover:bg-violet-main hover:text-red-600 data-[disabled]:pointer-events-none">
+              <Link href="/api/auth/logout">Exit</Link>
             </DropdownMenu.Item>
 
             <DropdownMenu.Arrow className="fill-white" />

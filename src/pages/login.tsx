@@ -61,93 +61,98 @@ export default function LogIn() {
         <title>PM - Log In</title>
       </Head>
 
-      <main className="flex h-screen items-center justify-between max-lg:justify-center max-lg:p-4 max-lg:pt-12">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex h-full max-w-lg flex-col items-center justify-center gap-4 pl-6 pt-14"
-        >
-          <h1 className="whitespace-nowrap">WELCOME BACK</h1>
-          <p className="text-center">welcome back! please enter your details</p>
-
-          <div className="w-full text-start">
-            <Input.Root>
-              <Input.Icon icon={At} />
-              <Input.Input
-                type="email"
-                {...register('email')}
-                placeholder="Your best email"
-              />
-            </Input.Root>
-
-            {errors.email && (
-              <span className="pl-2 text-red-500">{errors.email.message}</span>
-            )}
-          </div>
-
-          <div className="w-full text-start">
-            <Input.Root>
-              <Input.Icon icon={Password} />
-              <Input.Input
-                type={isShowPassword ? 'text' : 'password'}
-                {...register('password')}
-                placeholder="password here"
-              />
-              <Input.Password
-                IsShowPassword={isShowPassword}
-                handleShowPassword={handleShowPassword}
-              />
-            </Input.Root>
-
-            {errors.password && (
-              <span className="pl-2 text-red-500">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center justify-center">
-            or use an alternative way
-          </div>
-
-          <div className="grid w-full gap-4">
-            <AuthButtons
-              href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`}
-            >
-              <GithubLogo size={32} />
-              Login with Github
-            </AuthButtons>
-
-            <AuthButtons
-              href={`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.NEXT_LINKEDIN_URL}/api/auth/linkedin&state=wdadwdawdsadegrgygdawd&scope=openid%20profile%20email`}
-            >
-              <LinkedinLogo size={32} />
-              Login with Linkedin
-            </AuthButtons>
-          </div>
-
-          {loginError && <span className="text-red-500">{loginError}</span>}
-
-          <Button
-            isLoading={IsLoading}
-            disabled={allInputs.email === '' || allInputs.password === ''}
-            type="submit"
+      <main className="flex h-screen items-center justify-between max-md:justify-center">
+        <div className="grid h-screen w-2/5 place-items-center border border-red-900 max-lg:w-full">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex h-full max-w-lg flex-col items-center justify-center gap-4 px-4"
           >
-            Log in
-          </Button>
-          <Link href="/signup">
-            Do not have an account?{' '}
-            <span className="font-semibold text-violet-main underline hover:opacity-80">
-              Sign up
-            </span>
-          </Link>
-        </form>
-        <div className="grid h-screen w-3/5 place-items-center bg-violet-main">
+            <h1 className="whitespace-nowrap">WELCOME BACK</h1>
+            <p className="text-center">
+              welcome back! please enter your details
+            </p>
+
+            <div className="w-full text-start">
+              <Input.Root>
+                <Input.Icon icon={At} />
+                <Input.Input
+                  type="email"
+                  {...register('email')}
+                  placeholder="Your best email"
+                />
+              </Input.Root>
+
+              {errors.email && (
+                <span className="pl-2 text-red-500">
+                  {errors.email.message}
+                </span>
+              )}
+            </div>
+
+            <div className="w-full text-start">
+              <Input.Root>
+                <Input.Icon icon={Password} />
+                <Input.Input
+                  type={isShowPassword ? 'text' : 'password'}
+                  {...register('password')}
+                  placeholder="password here"
+                />
+                <Input.Password
+                  IsShowPassword={isShowPassword}
+                  handleShowPassword={handleShowPassword}
+                />
+              </Input.Root>
+
+              {errors.password && (
+                <span className="pl-2 text-red-500">
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center justify-center">
+              or use an alternative way
+            </div>
+
+            <div className="grid w-full gap-4">
+              <AuthButtons
+                href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`}
+              >
+                <GithubLogo size={32} />
+                Login with Github
+              </AuthButtons>
+
+              <AuthButtons
+                href={`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.NEXT_LINKEDIN_URL}/api/auth/linkedin&state=wdadwdawdsadegrgygdawd&scope=openid%20profile%20email`}
+              >
+                <LinkedinLogo size={32} />
+                Login with Linkedin
+              </AuthButtons>
+            </div>
+
+            {loginError && <span className="text-red-500">{loginError}</span>}
+
+            <Button
+              isLoading={IsLoading}
+              disabled={allInputs.email === '' || allInputs.password === ''}
+              type="submit"
+            >
+              Log in
+            </Button>
+            <Link href="/signup">
+              Do not have an account?{' '}
+              <span className="font-semibold text-violet-main underline hover:opacity-80">
+                Sign up
+              </span>
+            </Link>
+          </form>
+        </div>
+        <div className="grid h-screen w-3/5 place-items-center bg-violet-main max-md:hidden">
           <Image
             width={600}
             height={600}
             quality={100}
             src="/login.png"
-            className="max-lg:hidden"
             alt="a rocket in ignition"
           />
         </div>

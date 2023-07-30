@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function GET(req: NextApiRequest, res: NextApiResponse) {
   const { code } = req.query
-  console.log(code)
+
   try {
     const registerResponse = await api.post('/github', { code })
 

@@ -11,7 +11,7 @@ export const AuthButtons = ({
   return (
     <Link
       href={href}
-      className="flex w-full items-center justify-center gap-2 rounded-md border border-black p-2 font-semibold shadow-lg transition-all duration-500 hover:scale-105"
+      className="flex w-full items-center justify-center gap-2 rounded-md border border-black p-2 font-semibold shadow-inner transition-all hover:shadow-xl active:translate-y-1"
     >
       {children}
     </Link>

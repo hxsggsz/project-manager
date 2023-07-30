@@ -27,7 +27,7 @@ export const SignUpSchema = z
     email: z.string().email('it must be a valid email'),
     password: z
       .string()
-      .min(3, 'password need be more long')
+      .min(8, 'password need be more long')
       .regex(
         /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
         'The password need to have one Uppercase, one number and one especial character',

@@ -61,19 +61,10 @@ export default function LogIn() {
         <title>PM - Log In</title>
       </Head>
 
-      <main className="flex h-screen items-center justify-between p-28 max-lg:justify-center max-lg:p-4 max-lg:pt-12">
-        <Image
-          width={500}
-          height={500}
-          quality={100}
-          src="/rocket.png"
-          className="max-lg:hidden"
-          alt="a rocket in ignition"
-        />
-
+      <main className="flex h-screen items-center justify-between max-lg:justify-center max-lg:p-4 max-lg:pt-12">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex h-full max-w-lg flex-col items-center gap-4"
+          className="flex h-full max-w-lg flex-col items-center justify-center gap-4 pl-6 pt-14"
         >
           <h1 className="whitespace-nowrap">WELCOME BACK</h1>
           <p className="text-center">welcome back! please enter your details</p>
@@ -150,6 +141,16 @@ export default function LogIn() {
             </span>
           </Link>
         </form>
+        <div className="grid h-screen w-3/5 place-items-center bg-violet-main">
+          <Image
+            width={600}
+            height={600}
+            quality={100}
+            src="/login.png"
+            className="max-lg:hidden"
+            alt="a rocket in ignition"
+          />
+        </div>
       </main>
     </>
   )

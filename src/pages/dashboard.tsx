@@ -3,11 +3,22 @@ import { Header } from '../components/header'
 import { getCookie } from 'cookies-next'
 import jwtDecode from 'jwt-decode'
 import { UserProps } from '@/utils/types/dashboard'
+import { Navbar } from '@/components/navbar'
+import { useState, useEffect } from 'react'
+import useSizeScreen from '@/hooks/useSizeScreen'
 
 export default function Dashboard({ user }: UserProps) {
+  const { width } = useSizeScreen()
+  const [isOpen, setIsOpen] = useState(true)
+
+  useEffect(() => {
+    width <= 570 ? setIsOpen(false) : setIsOpen(true)
+  }, [width])
+
   return (
     <>
-      <Header user={user} />
+      <Header navbarOpen={isOpen} user={user} />
+      <Navbar isOpen={isOpen} />
     </>
   )
 }

@@ -2,14 +2,22 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { CaretDown, CaretUp } from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { UserProps } from '@/utils/types/dashboard'
+import { Token } from '@/utils/types/dashboard'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 
-export const Header = ({ user }: UserProps) => {
+interface headerProps {
+  user: Token
+  navbarOpen: boolean
+}
+
+export const Header = ({ user, navbarOpen }: headerProps) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <header className="fixed left-0 top-0 flex w-screen justify-end border-[1px] border-slate-300 py-5 pr-12">
+    <header
+      data-open={navbarOpen}
+      className="fixed right-0 top-0 flex w-3/4 justify-end border-b-[1px] border-slate-300 py-5 pr-12 data-[open=false]:w-[95%]"
+    >
       <DropdownMenu.Root onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger asChild>
           <div className="flex cursor-pointer items-center gap-2">
@@ -32,9 +40,9 @@ export const Header = ({ user }: UserProps) => {
             />
             <span>
               {isOpen ? (
-                <CaretUp size={20} weight="bold" />
+                <CaretUp size={20} weight="thin" />
               ) : (
-                <CaretDown size={20} weight="bold" />
+                <CaretDown size={20} weight="thin" />
               )}
             </span>
           </div>

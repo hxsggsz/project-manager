@@ -1,29 +1,24 @@
-import { z } from 'zod'
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { api } from '@/lib/api'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { Button } from './components/button'
-import { Input } from './components/input-auth'
-import { useEffect, useMemo, useState } from 'react'
+import { Button } from '../components/button'
+import { Input } from '../components/input'
+import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AuthButtons } from './components/auth-buttons'
-import { GithubLogo, LinkedinLogo } from '@phosphor-icons/react'
+import { AuthButtons } from '../components/auth-buttons'
+import { At, GithubLogo, LinkedinLogo, Password } from '@phosphor-icons/react'
+import { LoginSchema, LoginTypes } from '@/utils/validations/login'
 
 export default function LogIn() {
   const router = useRouter()
-  const [IsLoading, setIsLoading] = useState(false)
   const [loginError, setLoginError] = useState('')
-  const [isShowPassword, setIsShowPassword] = useState(true)
+  const [IsLoading, setIsLoading] = useState(false)
+  const [isShowPassword, setIsShowPassword] = useState(false)
 
-  const LoginSchema = z.object({
-    email: z.string().email('it must be a valid email'),
-    password: z.string().min(3, 'password need be more long'),
-  })
-
-  type LoginTypes = z.infer<typeof LoginSchema>
+  const handleShowPassword = () => setIsShowPassword((prev) => !prev)
 
   const {
     watch,
@@ -41,22 +36,20 @@ export default function LogIn() {
       setIsLoading(true)
       setLoginError('')
       const loginResponse = await api.post('/login', data)
-      const { token } = loginResponse.data
+      const { access_token, refresh_token } = loginResponse.data
 
-      setIsLoading(false)
-      router.replace(`/api/auth/login?token=${token}`)
+      router.replace(
+        `/api/auth/login?token=${access_token}&refresh=${refresh_token}`,
+      )
     } catch (error: any) {
-      setIsLoading(false)
       console.error('signup api', error)
-      setLoginError(error.response.data.message)
+      setLoginError(error.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const allInputs = watch()
-
-  const handleSubmitDisable = useMemo(() => {
-    return allInputs.email === '' || allInputs.password === ''
-  }, [allInputs])
 
   useEffect(() => {
     setFocus('email')
@@ -86,12 +79,14 @@ export default function LogIn() {
           <p className="text-center">welcome back! please enter your details</p>
 
           <div className="w-full text-start">
-            <Input
-              IsEmail
-              type="email"
-              {...register('email')}
-              placeholder="your best email here"
-            />
+            <Input.Root>
+              <Input.Icon icon={At} />
+              <Input.Input
+                type="email"
+                {...register('email')}
+                placeholder="Your best email"
+              />
+            </Input.Root>
 
             {errors.email && (
               <span className="pl-2 text-red-500">{errors.email.message}</span>
@@ -99,14 +94,18 @@ export default function LogIn() {
           </div>
 
           <div className="w-full text-start">
-            <Input
-              IsPassword
-              {...register('password')}
-              placeholder="password here"
-              IsShowPassword={isShowPassword}
-              setIsShowPassword={setIsShowPassword}
-              type={isShowPassword ? 'password' : 'text'}
-            />
+            <Input.Root>
+              <Input.Icon icon={Password} />
+              <Input.Input
+                type={isShowPassword ? 'text' : 'password'}
+                {...register('password')}
+                placeholder="password here"
+              />
+              <Input.Password
+                IsShowPassword={isShowPassword}
+                handleShowPassword={handleShowPassword}
+              />
+            </Input.Root>
 
             {errors.password && (
               <span className="pl-2 text-red-500">
@@ -119,17 +118,19 @@ export default function LogIn() {
             or use an alternative way
           </div>
 
-          <div className="flex gap-4">
+          <div className="grid w-full gap-4">
             <AuthButtons
               href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`}
             >
               <GithubLogo size={32} />
+              Login with Github
             </AuthButtons>
 
             <AuthButtons
-              href={`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&redirect_uri=http://localhost:3000/api/auth/linkedin&state=wdadwdawdsadegrgygdawd&scope=openid%20profile%20email`}
+              href={`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.NEXT_LINKEDIN_URL}/api/auth/linkedin&state=wdadwdawdsadegrgygdawd&scope=openid%20profile%20email`}
             >
               <LinkedinLogo size={32} />
+              Login with Linkedin
             </AuthButtons>
           </div>
 
@@ -137,7 +138,7 @@ export default function LogIn() {
 
           <Button
             isLoading={IsLoading}
-            disabled={handleSubmitDisable}
+            disabled={allInputs.email === '' || allInputs.password === ''}
             type="submit"
           >
             Log in

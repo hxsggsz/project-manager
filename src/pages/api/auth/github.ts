@@ -4,13 +4,20 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function GET(req: NextApiRequest, res: NextApiResponse) {
   const { code } = req.query
-
+  console.log(code)
   try {
     const registerResponse = await api.post('/github', { code })
 
-    const { token } = registerResponse.data
+    const { access_token, refresh_token } = registerResponse.data
 
-    setCookie('token', token, {
+    setCookie('token', access_token, {
+      req,
+      res,
+      path: '/',
+      maxAge: 2592000,
+    })
+
+    setCookie('refresh', refresh_token, {
       req,
       res,
       path: '/',
@@ -19,6 +26,6 @@ export default async function GET(req: NextApiRequest, res: NextApiResponse) {
 
     return res.redirect('/dashboard')
   } catch (error: any) {
-    console.log(error.response.data.message)
+    console.log(error.message)
   }
 }

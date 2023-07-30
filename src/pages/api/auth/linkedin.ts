@@ -8,9 +8,16 @@ export default async function GET(req: NextApiRequest, res: NextApiResponse) {
   try {
     const registerResponse = await api.post('/linkedin', { code })
 
-    const { token } = registerResponse.data
+    const { access_token, refresh_token } = registerResponse.data
 
-    setCookie('token', token, {
+    setCookie('token', access_token, {
+      req,
+      res,
+      path: '/',
+      maxAge: 2592000,
+    })
+
+    setCookie('refresh', refresh_token, {
       req,
       res,
       path: '/',
@@ -19,6 +26,6 @@ export default async function GET(req: NextApiRequest, res: NextApiResponse) {
 
     return res.redirect('/dashboard')
   } catch (error: any) {
-    console.log('[linkedin]: ', error.response.data.message)
+    console.log('[linkedin]: ', error.message)
   }
 }

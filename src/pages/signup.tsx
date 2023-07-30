@@ -1,59 +1,25 @@
-import { z } from 'zod'
 import Head from 'next/head'
 import Link from 'next/link'
-import Image from 'next/image'
 import { api } from '@/lib/api'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { Button } from './components/button'
-import { Input } from './components/input-auth'
+import { Button } from '../components/button'
+import { Input } from '../components/input'
 import { useEffect, useMemo, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { At, Password, UserCircle } from '@phosphor-icons/react'
+import { SignUpSchema, SignUpTypes } from '@/utils/validations/signup'
 
 export default function SignUp() {
   const router = useRouter()
   const [IsLoading, setIsLoading] = useState(false)
   const [signUpError, setSignUpError] = useState('')
-  const [isShowPassword, setIsShowPassword] = useState(true)
+  const [isShowPassword, setIsShowPassword] = useState(false)
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false)
 
-  const SignUpSchema = z
-    .object({
-      name: z
-        .string()
-        .min(5, 'your name need be bigger')
-        .max(30, 'your name need be smaller')
-        .transform((name) => {
-          return name
-            .trim()
-            .split(' ')
-            .map((word) =>
-              word[0].toLocaleUpperCase().concat(word.substring(1)),
-            )
-            .join(' ')
-        }),
-      username: z
-        .string()
-        .min(5, 'your username need be bigger')
-        .max(30, 'your username need be smaller')
-        .transform((username) => {
-          return username
-            .trim()
-            .split(' ')
-            .map((word) =>
-              word[0].toLocaleUpperCase().concat(word.substring(1)),
-            )
-            .join(' ')
-        }),
-      email: z.string().email('it must be a valid email'),
-      password: z.string().min(3, 'password need be more long'),
-      confirmPassword: z.string(),
-    })
-    .refine((inputs) => inputs.password === inputs.confirmPassword, {
-      path: ['confirmPassword'],
-      message: 'the password need be equal to the confirmation password',
-    })
-
-  type SignUpTypes = z.infer<typeof SignUpSchema>
+  const handleShowPassword = () => setIsShowPassword((prev) => !prev)
+  const handleShowConfirmPassword = () =>
+    setIsShowConfirmPassword((prev) => !prev)
 
   const {
     watch,
@@ -70,15 +36,25 @@ export default function SignUp() {
     try {
       setIsLoading(true)
       setSignUpError('')
-      const signUpResponse = await api.post('/signup', data)
-      const { token } = signUpResponse.data
 
-      setIsLoading(false)
-      router.replace(`/api/auth/login?token=${token}`)
+      const body = {
+        name: data.name,
+        profilePhoto:
+          'https://i.pinimg.com/564x/07/c4/72/07c4720d19a9e9edad9d0e939eca304a.jpg',
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      }
+      const signUpResponse = await api.post('/signUp', body)
+
+      if (signUpResponse.status === 200) {
+        router.replace('/login')
+      }
     } catch (error: any) {
-      setIsLoading(false)
       console.error('signup api', error)
-      setSignUpError(error.response.data.message)
+      setSignUpError(error.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -104,16 +80,7 @@ export default function SignUp() {
         <title>PM - Sign Up</title>
       </Head>
 
-      <main className="flex h-screen items-center justify-between p-16 max-lg:justify-center max-lg:p-4 max-lg:pt-12">
-        <Image
-          width={500}
-          height={500}
-          quality={100}
-          src="/rocket.png"
-          className="max-lg:hidden"
-          alt="a rocket in ignition"
-        />
-
+      <main className="flex h-screen items-center justify-center p-16 max-lg:p-4 max-lg:pt-12">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex h-full max-w-lg flex-col items-center gap-4"
@@ -121,80 +88,88 @@ export default function SignUp() {
           <h1 className="whitespace-nowrap">WELCOME BACK</h1>
           <p className="text-center">welcome back! please enter your details</p>
 
-          <div className="flex w-full gap-4 text-start max-sm:flex-col">
-            <div>
-              <Input
-                type="text"
+          <div className="flex w-full gap-2 text-start">
+            <Input.Root>
+              <Input.Icon icon={UserCircle} />
+              <Input.Input
+                type="name"
                 {...register('name')}
-                placeholder="your best name here"
+                placeholder="Your best name"
               />
+            </Input.Root>
 
-              {errors.name && (
-                <span className="pl-2 text-red-500">{errors.name.message}</span>
-              )}
-            </div>
+            {errors.name && (
+              <span className="pl-2 text-red-500">{errors.name.message}</span>
+            )}
 
-            <div className="">
-              <Input
-                type="text"
+            <Input.Root>
+              <Input.Icon icon={UserCircle} />
+              <Input.Input
+                type="username"
                 {...register('username')}
-                placeholder="your best username"
+                placeholder="Your best username"
               />
+            </Input.Root>
 
-              {errors.username && (
-                <span className="pl-2 text-red-500">
-                  {errors.username.message}
-                </span>
-              )}
-            </div>
+            {errors.username && (
+              <span className="pl-2 text-red-500">
+                {errors.username.message}
+              </span>
+            )}
           </div>
 
           <div className="w-full text-start">
-            <Input
-              IsEmail
-              type="email"
-              {...register('email')}
-              placeholder="your best email here"
-            />
+            <Input.Root>
+              <Input.Icon icon={At} />
+              <Input.Input
+                type="email"
+                {...register('email')}
+                placeholder="Your best email"
+              />
+            </Input.Root>
 
             {errors.email && (
               <span className="pl-2 text-red-500">{errors.email.message}</span>
             )}
           </div>
 
-          <div className="w-full text-start">
-            <Input
-              IsPassword
-              {...register('password')}
-              placeholder="password here"
-              IsShowPassword={isShowPassword}
-              setIsShowPassword={setIsShowPassword}
-              type={isShowPassword ? 'password' : 'text'}
-            />
+          <div className="flex w-full gap-2 text-start">
+            <Input.Root>
+              <Input.Icon icon={Password} />
+              <Input.Input
+                type={isShowPassword ? 'text' : 'password'}
+                {...register('password')}
+                placeholder="password here"
+              />
+              <Input.Password
+                IsShowPassword={isShowPassword}
+                handleShowPassword={handleShowPassword}
+              />
+            </Input.Root>
 
-            {errors.password && (
-              <span className="pl-2 text-red-500">
-                {errors.password.message}
-              </span>
-            )}
+            <Input.Root>
+              <Input.Icon icon={Password} />
+              <Input.Input
+                type={isShowConfirmPassword ? 'text' : 'password'}
+                {...register('confirmPassword')}
+                placeholder="confirm password"
+              />
+              <Input.Password
+                IsShowPassword={isShowConfirmPassword}
+                handleShowPassword={handleShowConfirmPassword}
+              />
+            </Input.Root>
           </div>
 
-          <div className="w-full text-start">
-            <Input
-              IsPassword
-              IsShowPassword={isShowPassword}
-              {...register('confirmPassword')}
-              placeholder="them same password here"
-              setIsShowPassword={setIsShowPassword}
-              type={isShowPassword ? 'password' : 'text'}
-            />
+          {errors.password && (
+            <span className="pl-2 text-red-500">{errors.password.message}</span>
+          )}
 
-            {errors.confirmPassword && (
-              <span className="pl-2 text-red-500">
-                {errors.confirmPassword.message}
-              </span>
-            )}
-          </div>
+          {errors.confirmPassword && (
+            <span className="pl-2 text-red-500">
+              {errors.confirmPassword.message}
+            </span>
+          )}
 
           {signUpError && <span className="text-red-500">{signUpError}</span>}
 

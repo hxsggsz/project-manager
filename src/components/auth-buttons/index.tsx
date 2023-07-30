@@ -11,7 +11,7 @@ export const AuthButtons = ({
   return (
     <Link
       href={href}
-      className="rounded-full bg-violet-main p-2 text-white transition-all duration-500 hover:scale-110 hover:bg-violet-800"
+      className="flex w-full items-center justify-center gap-2 rounded-md border border-black p-2 font-semibold shadow-lg transition-all duration-500 hover:scale-105"
     >
       {children}
     </Link>

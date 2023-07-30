@@ -2,19 +2,30 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { CaretDown, CaretUp } from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { UserProps } from '@/utils/types/dashboard'
 
-export const Header = () => {
+export const Header = ({ user }: UserProps) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <header className="fixed left-0 top-0 flex w-screen justify-end border-[1px] border-slate-300 py-3 pr-4">
       <DropdownMenu.Root onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger asChild>
           <div className="flex cursor-pointer items-center gap-2">
+            <section>
+              <h1 className="text-base font-normal">{user.name}</h1>
+              <p className=" text-right text-sm text-slate-400">
+                {user.username}
+              </p>
+            </section>
             <Image
-              width={50}
-              height={50}
-              src={`/defaultUser.png`}
-              alt={`profile picture of`}
+              width={38}
+              height={38}
+              src={
+                user.profile_photo === ''
+                  ? '/defaultUser.png'
+                  : user.profile_photo
+              }
+              alt={`profile picture of ${user.name}`}
               className="pointer-events-none select-none rounded-full"
             />
             <span>

@@ -16,7 +16,7 @@ export const Header = ({ user, navbarOpen }: headerProps) => {
   return (
     <header
       data-open={navbarOpen}
-      className="fixed right-0 top-0 flex w-3/4 justify-end border-b-[1px] border-slate-300 py-5 pr-12 data-[open=false]:w-[95%]"
+      className="fixed right-0 top-0 flex w-[83%] justify-end border-b-[1px] border-slate-300 py-5 pr-12 data-[open=false]:w-[95%]"
     >
       <DropdownMenu.Root onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger asChild>

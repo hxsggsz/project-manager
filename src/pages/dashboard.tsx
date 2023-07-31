@@ -6,11 +6,12 @@ import { UserProps } from '@/utils/types/dashboard'
 import { Navbar } from '@/components/navbar'
 import { useState, useEffect } from 'react'
 import useSizeScreen from '@/hooks/useSizeScreen'
+import { Home } from '@/components/home'
 
 export default function Dashboard({ user }: UserProps) {
   const { width } = useSizeScreen()
   const [isOpen, setIsOpen] = useState(true)
-
+  const handleOpen = () => setIsOpen((prev) => !prev)
   useEffect(() => {
     width <= 570 ? setIsOpen(false) : setIsOpen(true)
   }, [width])
@@ -18,7 +19,12 @@ export default function Dashboard({ user }: UserProps) {
   return (
     <>
       <Header navbarOpen={isOpen} user={user} />
-      <Navbar isOpen={isOpen} />
+      <div className="flex h-screen">
+        <Navbar isOpen={isOpen} handleOpen={handleOpen} />
+        <div className="flex w-3/4 justify-center max-md:w-full">
+          <Home userId={user.sub} />
+        </div>
+      </div>
     </>
   )
 }

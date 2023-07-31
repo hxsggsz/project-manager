@@ -4,12 +4,14 @@ import { Spinner } from '../spinner'
 interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
   isLoading?: boolean
+  isFull?: boolean
 }
 
-export const Button = ({ children, isLoading, ...props }: IButton) => (
+export const Button = ({ children, isLoading, isFull, ...props }: IButton) => (
   <button
     {...props}
-    className="grid w-full place-items-center rounded-md bg-violet-main py-2 font-bold text-white transition-all hover:bg-violet-700 active:translate-y-1 disabled:cursor-not-allowed disabled:bg-violet-950"
+    data-full={isFull}
+    className="grid place-items-center rounded-md bg-violet-main px-4 py-2 font-bold text-white transition-all hover:bg-violet-700 active:translate-y-1 disabled:cursor-not-allowed disabled:bg-violet-950 data-[full=open]:w-full max-md:w-full"
   >
     {isLoading ? (
       <div data-cy="loading">

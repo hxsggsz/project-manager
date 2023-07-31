@@ -174,6 +174,7 @@ export default function SignUp() {
           {signUpError && <span className="text-red-500">{signUpError}</span>}
 
           <Button
+            isFull
             type="submit"
             isLoading={IsLoading}
             disabled={handleSubmitDisable}

@@ -133,6 +133,7 @@ export default function LogIn() {
             {loginError && <span className="text-red-500">{loginError}</span>}
 
             <Button
+              isFull
               isLoading={IsLoading}
               disabled={allInputs.email === '' || allInputs.password === ''}
               type="submit"

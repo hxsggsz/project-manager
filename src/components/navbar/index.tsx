@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ModalAddProject } from '../modal-add-project'
+import { ProjectList } from '../project-list'
 
 const variantsMenu = {
   open: { width: '250px' },
@@ -55,27 +56,24 @@ export const Navbar = ({
         {isOpen && <h1 className="truncate text-xl">Project Manager</h1>}
       </header>
 
-      <ul className="grid gap-2 py-7 max-md:place-items-center">
-        <Link
-          className=""
-          href="/dashboard#home"
-          onClick={(ev) => ev.stopPropagation()}
-        >
+      <motion.ul layout className="grid gap-2 py-7 max-md:place-items-center">
+        <Link href="/dashboard#home" onClick={(ev) => ev.stopPropagation()}>
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'home' ? 1.05 : 1 }}
             className="flex gap-3 rounded-lg px-4 py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
           >
-            <House size={24} weight={hash === 'home' ? 'fill' : 'thin'} />
+            <House
+              size={24}
+              data-select={hash === 'home'}
+              weight={hash === 'home' ? 'fill' : 'thin'}
+              className="data-[select=true]:text-violet-main"
+            />
             {isOpen && <p className="text-base">Home</p>}
           </motion.li>
         </Link>
 
-        <Link
-          onClick={(ev) => ev.stopPropagation()}
-          className=""
-          href="/dashboard#message"
-        >
+        <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#message">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'message' ? 1.05 : 1 }}
@@ -83,23 +81,26 @@ export const Navbar = ({
           >
             <ChatTeardropText
               size={24}
+              data-select={hash === 'message'}
               weight={hash === 'message' ? 'fill' : 'thin'}
+              className="data-[select=true]:text-violet-main"
             />
             {isOpen && <p className="text-base">Messages</p>}
           </motion.li>
         </Link>
 
-        <Link
-          onClick={(ev) => ev.stopPropagation()}
-          className=""
-          href="/dashboard#tasks"
-        >
+        <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#tasks">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'tasks' ? 1.05 : 1 }}
             className="flex gap-3 rounded-lg px-4 py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
           >
-            <Kanban size={24} weight={hash === 'tasks' ? 'fill' : 'thin'} />
+            <Kanban
+              size={24}
+              data-select={hash === 'tasks'}
+              weight={hash === 'tasks' ? 'fill' : 'thin'}
+              className="data-[select=true]:text-violet-main"
+            />
             {isOpen && <p className="text-base">Tasks</p>}
           </motion.li>
         </Link>
@@ -114,30 +115,40 @@ export const Navbar = ({
             animate={{ x: 0, opacity: 1, scale: hash === 'members' ? 1.05 : 1 }}
             className="flex gap-3"
           >
-            <Users size={24} weight={hash === 'members' ? 'fill' : 'thin'} />
+            <Users
+              size={24}
+              data-select={hash === 'members'}
+              weight={hash === 'members' ? 'fill' : 'thin'}
+              className="data-[select=true]:text-violet-main"
+            />
             {isOpen && <p className="text-base">Members</p>}
           </motion.li>
         </Link>
-      </ul>
+      </motion.ul>
 
-      <article
-        onClick={(ev) => ev.stopPropagation()}
-        className="border-t border-slate-300 px-4 py-7"
-      >
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-bold">MY PROJECTS</p>
-          <ModalAddProject>
-            <Plus
-              size={16}
-              weight="light"
-              className="rounded-md border border-slate-400 text-slate-600"
-            />
-          </ModalAddProject>
-        </div>
-        <ul>
-          <li>test</li>
-        </ul>
-      </article>
+      {isOpen && (
+        <article
+          onClick={(ev) => ev.stopPropagation()}
+          className="border-t border-slate-300 px-4 py-7"
+        >
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-xs font-bold">MY PROJECTS</p>
+            <ModalAddProject>
+              <Plus
+                size={16}
+                weight="light"
+                className="rounded-md border border-slate-400 text-slate-600"
+              />
+            </ModalAddProject>
+          </div>
+          <ul>
+            <li className="first:mt-5">
+              <ProjectList item={'test'} />
+              <ProjectList item={'test1'} />
+            </li>
+          </ul>
+        </article>
+      )}
 
       <div className="absolute bottom-0 right-0 px-4 py-7 max-[570px]:py-[30px]">
         {isOpen ? (

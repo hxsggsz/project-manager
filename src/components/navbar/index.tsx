@@ -14,36 +14,36 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ModalAddProject } from '../modal-add-project'
 import { ProjectList } from '../project-list'
+import { Project } from '@/utils/types/dashboard'
+
+interface NavBarProps {
+  isOpen: boolean
+  handleOpen: () => void
+  projects: Project[]
+}
 
 const variantsMenu = {
   open: { width: '250px' },
   closed: { width: '68px' },
 }
 
-export const Navbar = ({
-  isOpen,
-  handleOpen,
-}: {
-  isOpen: boolean
-  handleOpen: () => void
-}) => {
+export const Navbar = (props: NavBarProps) => {
   const { asPath } = useRouter()
   const [hash, setHash] = useState('')
-
   useEffect(() => {
     setHash(asPath.split('#')[1])
   }, [asPath])
-
+  console.log(props.projects)
   return (
     <motion.nav
       layout
-      animate={isOpen ? 'open' : 'closed'}
+      animate={props.isOpen ? 'open' : 'closed'}
       variants={variantsMenu}
-      onClick={handleOpen}
+      onClick={props.handleOpen}
       className="relative w-1/4 cursor-pointer overflow-hidden border-r border-slate-300"
     >
       <header
-        data-open={isOpen}
+        data-open={props.isOpen}
         className="flex items-center justify-center gap-2 border-b border-slate-300 px-4 py-[30px] data-[open=true]:py-7"
       >
         <Image
@@ -53,7 +53,7 @@ export const Navbar = ({
           className="h-full"
           alt="logo of the project"
         />
-        {isOpen && <h1 className="truncate text-xl">Project Manager</h1>}
+        {props.isOpen && <h1 className="truncate text-xl">Project Manager</h1>}
       </header>
 
       <motion.ul layout className="grid gap-2 py-7 max-md:place-items-center">
@@ -69,7 +69,7 @@ export const Navbar = ({
               weight={hash === 'home' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
-            {isOpen && <p className="text-base">Home</p>}
+            {props.isOpen && <p className="text-base">Home</p>}
           </motion.li>
         </Link>
 
@@ -85,7 +85,7 @@ export const Navbar = ({
               weight={hash === 'message' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
-            {isOpen && <p className="text-base">Messages</p>}
+            {props.isOpen && <p className="text-base">Messages</p>}
           </motion.li>
         </Link>
 
@@ -101,7 +101,7 @@ export const Navbar = ({
               weight={hash === 'tasks' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
-            {isOpen && <p className="text-base">Tasks</p>}
+            {props.isOpen && <p className="text-base">Tasks</p>}
           </motion.li>
         </Link>
 
@@ -121,12 +121,12 @@ export const Navbar = ({
               weight={hash === 'members' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
-            {isOpen && <p className="text-base">Members</p>}
+            {props.isOpen && <p className="text-base">Members</p>}
           </motion.li>
         </Link>
       </motion.ul>
 
-      {isOpen && (
+      {props.isOpen && (
         <article
           onClick={(ev) => ev.stopPropagation()}
           className="border-t border-slate-300 px-4 py-7"
@@ -143,15 +143,16 @@ export const Navbar = ({
           </div>
           <ul>
             <li className="first:mt-5">
-              <ProjectList item={'test'} />
-              <ProjectList item={'test1'} />
+              {props.projects.map((proj) => (
+                <ProjectList key={proj._id} item={proj.props.name} />
+              ))}
             </li>
           </ul>
         </article>
       )}
 
       <div className="absolute bottom-0 right-0 px-4 py-7 max-[570px]:py-[30px]">
-        {isOpen ? (
+        {props.isOpen ? (
           <CaretDoubleRight size={24} weight="thin" />
         ) : (
           <CaretDoubleLeft size={24} weight="thin" />

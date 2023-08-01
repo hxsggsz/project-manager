@@ -2,20 +2,15 @@ import { GetServerSideProps } from 'next'
 import { Header } from '../components/header'
 import { getCookie } from 'cookies-next'
 import jwtDecode from 'jwt-decode'
-import { User, DashboardProps, Project } from '@/utils/types/dashboard'
+import { User, DashboardProps, Projects } from '@/utils/types/dashboard'
 import { Navbar } from '@/components/navbar'
 import { useState, useEffect } from 'react'
 import useSizeScreen from '@/hooks/useSizeScreen'
 import { Home } from '@/components/home'
 import { api } from '@/lib/api'
-import useSWR from 'swr'
-import { fetcher } from '@/utils/fetcher'
+import { useQuery } from 'react-query'
 
-interface FetchProps {
-  projects: Project[]
-}
-
-export default function Dashboard({ user, projects }: DashboardProps) {
+export default function Dashboard({ user }: DashboardProps) {
   const { width } = useSizeScreen()
   const [isOpen, setIsOpen] = useState(true)
   const token = getCookie('token')
@@ -25,13 +20,12 @@ export default function Dashboard({ user, projects }: DashboardProps) {
     width <= 570 ? setIsOpen(false) : setIsOpen(true)
   }, [width])
 
-  const { data } = useSWR<FetchProps>(
-    [`/project/${user.sub}`, token],
-    fetcher,
-    {
-      fallbackData: projects as any,
-    },
-  )
+  const { data } = useQuery<Projects>('personal info', async () => {
+    const response = await api.get(`/project/${user.sub}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    return response.data
+  })
   return (
     <>
       <Header navbarOpen={isOpen} user={user} />
@@ -39,7 +33,7 @@ export default function Dashboard({ user, projects }: DashboardProps) {
         <Navbar
           isOpen={isOpen}
           handleOpen={handleOpen}
-          projects={data?.projects!}
+          projects={data?.projects || []}
         />
         <div className="flex w-3/4 justify-center max-md:w-full">
           <Home userId={user.sub} />
@@ -61,10 +55,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   const user: User = jwtDecode(token.toString())
-  const projectsResponse = await api.get(`project/${user.sub}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
+  // const projectsResponse = await api.get(`project/${user.sub}`, {
+  //   headers: { Authorization: `Bearer ${token}` },
+  // })
   return {
-    props: { user, projects: projectsResponse.data },
+    props: { user },
   }
 }

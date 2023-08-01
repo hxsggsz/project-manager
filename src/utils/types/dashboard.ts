@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 export interface DashboardProps {
   user: User
-  projects: Project[]
 }
 
 export interface User {
@@ -11,12 +10,18 @@ export interface User {
   profile_photo: string
 }
 
+export interface Projects {
+  projects: Project[]
+}
+
 export interface Project {
   _id: string
-  props: {
-    createdAt: Date
-    isPublic: boolean
-    name: string
-    ownerId: string
-  }
+  props: Props
+}
+
+export interface Props {
+  name: string
+  isPublic: boolean
+  ownerId: string
+  createdAt: string
 }

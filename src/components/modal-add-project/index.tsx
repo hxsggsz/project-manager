@@ -3,7 +3,6 @@ import { Modal } from '../modal'
 import * as HoverCard from '@radix-ui/react-hover-card'
 import * as Switch from '@radix-ui/react-switch'
 import { Button } from '../button'
-import { api } from '@/lib/api'
 import {
   CreateProjectProps,
   CreateProjectSchema,
@@ -13,22 +12,42 @@ import { getCookie } from 'cookies-next'
 import { useForm } from 'react-hook-form'
 import { Input } from '../input'
 import jwtDecode from 'jwt-decode'
-import { Token } from '@/utils/types/dashboard'
+import { User } from '@/utils/types/dashboard'
+import { api } from '@/lib/api'
+import { useMutation, useQueryClient } from 'react-query'
+
+interface NewProjectProps {
+  name: string
+  isPublic: boolean
+}
 
 export const ModalAddProject = ({ children }: { children: ReactNode }) => {
+  const token = getCookie('token')
   const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [isPublic, setIsPublic] = useState(false)
 
-  const token = getCookie('token')
   const user = useMemo(() => {
     if (!token) {
       return
     }
 
-    const userDecode: Token = jwtDecode(token.toString())
+    const userDecode: User = jwtDecode(token.toString())
     return userDecode
   }, [token])
+
+  const query = useQueryClient()
+  const mutate = useMutation({
+    mutationFn: (data: NewProjectProps) => {
+      return api.post(`/project/${user?.sub}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+    },
+    onSuccess: () => {
+      query.invalidateQueries(['personal info'])
+    },
+  })
 
   const {
     watch,
@@ -40,26 +59,8 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
     defaultValues: { name: '' },
   })
 
-  async function onSubmit({ name }: CreateProjectProps) {
-    try {
-      setIsLoading(true)
-      await api.post(
-        `/project/${user?.sub}`,
-        {
-          name,
-          isPublic,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
+  function onSubmit({ name }: CreateProjectProps) {
+    mutate.mutate({ name, isPublic })
   }
 
   return (
@@ -116,8 +117,8 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
           <div className="flex w-full justify-end">
             <Button
               type="submit"
-              isLoading={isLoading}
-              disabled={watch('name') === ''}
+              isLoading={mutate.isLoading}
+              disabled={watch('name') === '' || mutate.isLoading}
             >
               Create
             </Button>

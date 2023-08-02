@@ -1,23 +1,44 @@
 import Image from 'next/image'
 import { useState } from 'react'
-import { CaretDown, CaretUp } from '@phosphor-icons/react'
+import { CaretDown, CaretUp, List } from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Token } from '@/utils/types/dashboard'
+import { User } from '@/utils/types/dashboard'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 
 interface headerProps {
-  user: Token
+  user: User
   navbarOpen: boolean
+  handleNavBar: () => void
 }
 
-export const Header = ({ user, navbarOpen }: headerProps) => {
+export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <header
       data-open={navbarOpen}
-      className="fixed right-0 top-0 flex w-[83%] justify-end border-b-[1px] border-slate-300 py-5 pr-12 data-[open=false]:w-[95%]"
+      className="fixed right-0 top-0 flex w-screen justify-between border-b-[1px] border-slate-300 px-7 backdrop-blur-sm"
     >
+      <section
+        data-open={navbarOpen}
+        className="sticky left-0 top-0 z-30 flex h-full select-none items-center justify-center gap-4 py-[30px] backdrop-blur-sm data-[open=true]:py-7"
+      >
+        <List
+          onClick={handleNavBar}
+          size={39}
+          className="cursor-pointer rounded-full p-2 transition-all hover:bg-slate-600/30 active:bg-slate-600/20"
+          weight="thin"
+        />
+        <Image
+          width={24}
+          height={24}
+          src="/logo.png"
+          className="h-full"
+          alt="logo of the project"
+        />
+        <h1 className="truncate text-xl">Project Manager</h1>
+      </section>
+
       <DropdownMenu.Root onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger asChild>
           <div className="flex cursor-pointer items-center gap-2">

@@ -1,20 +1,19 @@
 import {
-  CaretDoubleLeft,
-  CaretDoubleRight,
   ChatTeardropText,
+  ClipboardText,
   House,
   Kanban,
   Plus,
   Users,
 } from '@phosphor-icons/react'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ModalAddProject } from '../modal-add-project'
 import { ProjectList } from '../project-list'
 import { Project } from '@/utils/types/dashboard'
+import { useDeleteProject } from '@/hooks/useProject'
 
 interface NavBarProps {
   isOpen: boolean
@@ -30,38 +29,30 @@ const variantsMenu = {
 export const Navbar = (props: NavBarProps) => {
   const { asPath } = useRouter()
   const [hash, setHash] = useState('')
+  const { mutate } = useDeleteProject()
+
   useEffect(() => {
     setHash(asPath.split('#')[1])
   }, [asPath])
-  console.log(props.projects)
+
   return (
     <motion.nav
       layout
       animate={props.isOpen ? 'open' : 'closed'}
       variants={variantsMenu}
       onClick={props.handleOpen}
-      className="relative w-1/4 cursor-pointer overflow-hidden border-r border-slate-300"
+      className="relative mt-[90px] w-1/4 cursor-pointer overflow-x-hidden"
     >
-      <header
+      <motion.ul
+        layout
         data-open={props.isOpen}
-        className="flex items-center justify-center gap-2 border-b border-slate-300 px-4 py-[30px] data-[open=true]:py-7"
+        className="grid gap-2 py-7 data-[open=false]:place-items-center data-[open=true]:px-7"
       >
-        <Image
-          width={24}
-          height={24}
-          src="/logo.png"
-          className="h-full"
-          alt="logo of the project"
-        />
-        {props.isOpen && <h1 className="truncate text-xl">Project Manager</h1>}
-      </header>
-
-      <motion.ul layout className="grid gap-2 py-7 max-md:place-items-center">
         <Link href="/dashboard#home" onClick={(ev) => ev.stopPropagation()}>
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'home' ? 1.05 : 1 }}
-            className="flex gap-3 rounded-lg px-4 py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
+            className="flex gap-3 rounded-lg py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
           >
             <House
               size={24}
@@ -77,7 +68,7 @@ export const Navbar = (props: NavBarProps) => {
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'message' ? 1.05 : 1 }}
-            className="flex gap-3 rounded-lg px-4 py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
+            className="flex gap-3 rounded-lg py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
           >
             <ChatTeardropText
               size={24}
@@ -93,7 +84,7 @@ export const Navbar = (props: NavBarProps) => {
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'tasks' ? 1.05 : 1 }}
-            className="flex gap-3 rounded-lg px-4 py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
+            className="flex gap-3 rounded-lg py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
           >
             <Kanban
               size={24}
@@ -105,15 +96,11 @@ export const Navbar = (props: NavBarProps) => {
           </motion.li>
         </Link>
 
-        <Link
-          onClick={(ev) => ev.stopPropagation()}
-          className="rounded-lg px-4 py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-0"
-          href="/dashboard#members"
-        >
+        <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#members">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'members' ? 1.05 : 1 }}
-            className="flex gap-3"
+            className="flex gap-3 rounded-lg py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
           >
             <Users
               size={24}
@@ -126,38 +113,59 @@ export const Navbar = (props: NavBarProps) => {
         </Link>
       </motion.ul>
 
-      {props.isOpen && (
-        <article
-          onClick={(ev) => ev.stopPropagation()}
-          className="border-t border-slate-300 px-4 py-7"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-xs font-bold">MY PROJECTS</p>
-            <ModalAddProject>
-              <Plus
-                size={16}
-                weight="light"
-                className="rounded-md border border-slate-400 text-slate-600"
-              />
-            </ModalAddProject>
-          </div>
-          <ul>
-            <li className="first:mt-5">
-              {props.projects.map((proj) => (
-                <ProjectList key={proj._id} item={proj.props.name} />
-              ))}
-            </li>
-          </ul>
-        </article>
-      )}
-
-      <div className="absolute bottom-0 right-0 px-4 py-7 max-[570px]:py-[30px]">
+      <article
+        data-open={props.isOpen}
+        className="grid gap-2 overflow-y-auto border-t border-slate-300 py-7 data-[open=false]:place-items-center data-[open=true]:px-7"
+      >
         {props.isOpen ? (
-          <CaretDoubleRight size={24} weight="thin" />
+          <>
+            <div
+              onClick={(ev) => ev.stopPropagation()}
+              className="flex items-center justify-between gap-2"
+            >
+              <p className="text-xs font-bold">MY PROJECTS</p>
+              <ModalAddProject>
+                <Plus
+                  size={16}
+                  weight="light"
+                  className="rounded-md border border-slate-400 text-slate-600"
+                />
+              </ModalAddProject>
+            </div>
+            <ul>
+              <AnimatePresence>
+                {props.projects.map((proj) => (
+                  <motion.li
+                    layout
+                    key={proj._id}
+                    className="first:mt-5"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    onClick={(ev) => ev.stopPropagation()}
+                    transition={{ duration: 0.3, ease: 'backInOut' }}
+                  >
+                    <ProjectList
+                      id={proj._id}
+                      item={proj.props.name}
+                      handleEdit={() => {}}
+                      handleDelete={() => mutate(proj._id)}
+                    />
+                    <ProjectList
+                      id={proj._id}
+                      item={proj.props.name}
+                      handleEdit={() => {}}
+                      handleDelete={() => mutate(proj._id)}
+                    />
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </ul>
+          </>
         ) : (
-          <CaretDoubleLeft size={24} weight="thin" />
+          <ClipboardText size={24} weight="thin" />
         )}
-      </div>
+      </article>
     </motion.nav>
   )
 }

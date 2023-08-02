@@ -4,10 +4,18 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
 interface ProjectListProps {
+  id: string
   item: string
+  handleEdit: (id: string) => void
+  handleDelete: (id: string) => void
 }
 
-export const ProjectList = ({ item }: ProjectListProps) => {
+export const ProjectList = ({
+  id,
+  item,
+  handleEdit,
+  handleDelete,
+}: ProjectListProps) => {
   const [isHover, setIsHover] = useState(false)
   const [projectMenuOpen, setProjectMenuOpen] = useState(false)
 
@@ -39,11 +47,17 @@ export const ProjectList = ({ item }: ProjectListProps) => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <DropdownMenu.Item className="flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none hover:bg-violet-main hover:text-white">
+                  <DropdownMenu.Item
+                    onSelect={() => handleEdit(id)}
+                    className="flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none hover:bg-violet-main hover:text-white"
+                  >
                     Edit project
                   </DropdownMenu.Item>
 
-                  <DropdownMenu.Item className="flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none text-red-400 outline-none hover:bg-violet-main data-[disabled]:pointer-events-none">
+                  <DropdownMenu.Item
+                    onSelect={() => handleDelete(id)}
+                    className="flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none text-red-400 outline-none hover:bg-violet-main data-[disabled]:pointer-events-none"
+                  >
                     Delete project
                   </DropdownMenu.Item>
 

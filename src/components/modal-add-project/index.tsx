@@ -19,6 +19,9 @@ import { useMutation, useQueryClient } from 'react-query'
 interface NewProjectProps {
   name: string
   isPublic: boolean
+  participantName: string
+  participantPhoto: string
+  participantUsername: string
 }
 
 export const ModalAddProject = ({ children }: { children: ReactNode }) => {
@@ -45,13 +48,14 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
       })
     },
     onSuccess: () => {
-      query.invalidateQueries(['personal info'])
+      query.invalidateQueries(['projects'])
     },
   })
 
   const {
     watch,
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateProjectProps>({
@@ -60,7 +64,25 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
   })
 
   function onSubmit({ name }: CreateProjectProps) {
-    mutate.mutate({ name, isPublic })
+    if (!user) {
+      return
+    }
+
+    const body = {
+      name,
+      isPublic,
+      participantName: user.name,
+      participantPhoto: user.profile_photo,
+      participantUsername: user.username,
+    }
+    mutate.mutate(body)
+
+    if (!mutate.isError) {
+      setIsOpen(false)
+      reset({
+        name: '',
+      })
+    }
   }
 
   return (

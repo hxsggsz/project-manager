@@ -18,7 +18,7 @@ interface headerProps {
 }
 
 const variantsMenu = {
-  open: { width: '248px' },
+  open: { width: '220px' },
   closed: { width: '80px' },
 }
 
@@ -53,7 +53,7 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
       <DropdownMenu.Root onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger asChild>
           <div className="flex cursor-pointer items-center gap-2">
-            <section>
+            <section data-open={navbarOpen} className="max-[404px]:hidden">
               <h1 className="text-base font-normal">{user.name}</h1>
               <p className=" text-right text-sm text-slate-500">
                 {user.username}

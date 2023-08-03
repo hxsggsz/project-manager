@@ -13,16 +13,7 @@ import { useForm } from 'react-hook-form'
 import { Input } from '../input'
 import jwtDecode from 'jwt-decode'
 import { User } from '@/utils/types/dashboard'
-import { api } from '@/lib/api'
-import { useMutation, useQueryClient } from 'react-query'
-
-interface NewProjectProps {
-  name: string
-  isPublic: boolean
-  participantName: string
-  participantPhoto: string
-  participantUsername: string
-}
+import { useCreateProject } from '@/hooks/useProject'
 
 export const ModalAddProject = ({ children }: { children: ReactNode }) => {
   const token = getCookie('token')
@@ -38,19 +29,7 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
     return userDecode
   }, [token])
 
-  const query = useQueryClient()
-  const mutate = useMutation({
-    mutationFn: (data: NewProjectProps) => {
-      return api.post(`/project/${user?.sub}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    },
-    onSuccess: () => {
-      query.invalidateQueries(['projects'])
-    },
-  })
+  const { mutate, isError, isLoading } = useCreateProject(user?.sub)
 
   const {
     watch,
@@ -71,13 +50,14 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
     const body = {
       name,
       isPublic,
+      userId: user.sub,
       participantName: user.name,
       participantPhoto: user.profile_photo,
       participantUsername: user.username,
     }
-    mutate.mutate(body)
+    mutate(body)
 
-    if (!mutate.isError) {
+    if (!isError) {
       setIsOpen(false)
       reset({
         name: '',
@@ -99,7 +79,7 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
             <Switch.Root
               defaultChecked={isPublic}
               onCheckedChange={setIsPublic}
-              className="relative h-[25px] w-[42px] cursor-pointer rounded-full border border-slate-300 shadow-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black data-[state=checked]:bg-violet-main"
+              className="relative h-[25px] w-[42px] cursor-pointer rounded-full border border-slate-300 shadow-md outline-none data-[state=checked]:bg-violet-main focus:shadow-[0_0_0_2px] focus:shadow-black"
               id="airplane-mode"
             >
               <Switch.Thumb className="block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-violet-main shadow-md transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px] data-[state=checked]:bg-white" />
@@ -139,8 +119,8 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
           <div className="flex w-full justify-end">
             <Button
               type="submit"
-              isLoading={mutate.isLoading}
-              disabled={watch('name') === '' || mutate.isLoading}
+              isLoading={isLoading}
+              disabled={watch('name') === '' || isLoading}
             >
               Create
             </Button>

@@ -22,8 +22,11 @@ interface NavBarProps {
 }
 
 const variantsMenu = {
-  open: { width: '250px' },
-  closed: { width: '80px' },
+  open: { minWidth: '220px' },
+  closed: {
+    maxWidth: '80px',
+    minWidth: '80px',
+  },
 }
 
 export const Navbar = (props: NavBarProps) => {
@@ -41,7 +44,7 @@ export const Navbar = (props: NavBarProps) => {
       animate={props.isOpen ? 'open' : 'closed'}
       variants={variantsMenu}
       onClick={props.handleOpen}
-      className="relative mt-[84px] w-1/4 cursor-pointer overflow-x-hidden border-r border-slate-300 scrollbar scrollbar-track-inherit scrollbar-thumb-violet-main scrollbar-thumb-rounded-lg scrollbar-w-2"
+      className="relative mt-[84px] cursor-pointer overflow-x-hidden border-r border-slate-300 scrollbar scrollbar-track-inherit scrollbar-thumb-violet-main scrollbar-thumb-rounded-lg scrollbar-w-2"
     >
       <motion.ul
         layout
@@ -119,7 +122,7 @@ export const Navbar = (props: NavBarProps) => {
 
       <article
         data-open={props.isOpen}
-        className="grid gap-2 overflow-y-auto border-t border-slate-300 py-7 data-[open=false]:place-items-center data-[open=true]:px-7"
+        className="grid gap-2 overflow-y-auto border-t border-slate-300 pb-5 pt-7 data-[open=false]:place-items-center data-[open=true]:px-7"
       >
         {props.isOpen ? (
           <>
@@ -142,7 +145,6 @@ export const Navbar = (props: NavBarProps) => {
                   <motion.li
                     layout
                     key={proj._id}
-                    className="first:mt-5"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}

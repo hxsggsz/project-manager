@@ -1,11 +1,6 @@
 import Image from 'next/image'
 import { useState } from 'react'
-import {
-  CaretDoubleLeft,
-  CaretDoubleRight,
-  CaretDown,
-  CaretUp,
-} from '@phosphor-icons/react'
+import { CaretDown, CaretUp } from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { User } from '@/utils/types/dashboard'
 import Link from 'next/link'
@@ -33,7 +28,7 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
         variants={variantsMenu}
         onClick={handleNavBar}
         animate={navbarOpen ? 'open' : 'closed'}
-        className="sticky left-0 top-0 z-30 flex h-full max-w-[250px] select-none items-center justify-center gap-4 border-r border-slate-300 py-[30px] backdrop-blur-sm"
+        className="sticky left-0 top-0 z-30 flex h-full max-w-[250px] select-none items-center justify-center gap-4 border-r border-slate-300 px-3 py-[30px] backdrop-blur-sm"
       >
         <Image
           width={24}
@@ -43,11 +38,6 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
           alt="logo of the project"
         />
         {navbarOpen && <h1 className="truncate text-xl">Project M.</h1>}
-        {navbarOpen ? (
-          <CaretDoubleLeft size={24} weight="thin" cursor="pointer" />
-        ) : (
-          <CaretDoubleRight size={24} weight="thin" cursor="pointer" />
-        )}
       </motion.section>
 
       <DropdownMenu.Root onOpenChange={setIsOpen}>

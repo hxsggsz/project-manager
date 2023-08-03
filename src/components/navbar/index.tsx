@@ -1,4 +1,6 @@
 import {
+  ArrowLineLeft,
+  ArrowLineRight,
   ChatTeardropText,
   ClipboardText,
   House,
@@ -63,6 +65,19 @@ export const Navbar = (props: NavBarProps) => {
         data-open={props.isOpen}
         className="grid gap-2 py-7 data-[open=false]:place-items-center data-[open=true]:px-3"
       >
+        <motion.li
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1, scale: hash === 'home' ? 1.05 : 1 }}
+          data-open={props.isOpen}
+          className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
+        >
+          {props.isOpen ? (
+            <ArrowLineLeft size={24} />
+          ) : (
+            <ArrowLineRight size={24} />
+          )}
+          {props.isOpen && <p className="text-base">Collapse</p>}
+        </motion.li>
         <Link href="/dashboard#home" onClick={(ev) => ev.stopPropagation()}>
           <motion.li
             initial={{ x: -100, opacity: 0 }}

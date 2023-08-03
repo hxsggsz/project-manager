@@ -1,6 +1,11 @@
 import Image from 'next/image'
 import { useState } from 'react'
-import { CaretDown, CaretUp, List } from '@phosphor-icons/react'
+import {
+  CaretDoubleLeft,
+  CaretDoubleRight,
+  CaretDown,
+  CaretUp,
+} from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { User } from '@/utils/types/dashboard'
 import Link from 'next/link'
@@ -12,23 +17,24 @@ interface headerProps {
   handleNavBar: () => void
 }
 
+const variantsMenu = {
+  open: { width: '248px' },
+  closed: { width: '80px' },
+}
+
 export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <header
       data-open={navbarOpen}
-      className="fixed right-0 top-0 flex w-screen justify-between border-b-[1px] border-slate-300 px-7 backdrop-blur-sm"
+      className="fixed right-0 top-0 flex w-screen justify-between border-b-[1px] border-slate-300 pr-[22px] backdrop-blur-sm"
     >
-      <section
-        data-open={navbarOpen}
-        className="sticky left-0 top-0 z-30 flex h-full select-none items-center justify-center gap-4 py-[30px] backdrop-blur-sm data-[open=true]:py-7"
+      <motion.section
+        variants={variantsMenu}
+        onClick={handleNavBar}
+        animate={navbarOpen ? 'open' : 'closed'}
+        className="sticky left-0 top-0 z-30 flex h-full max-w-[250px] select-none items-center justify-center gap-4 border-r border-slate-300 py-[30px] backdrop-blur-sm"
       >
-        <List
-          onClick={handleNavBar}
-          size={39}
-          className="cursor-pointer rounded-full p-2 transition-all hover:bg-slate-600/30 active:bg-slate-600/20"
-          weight="thin"
-        />
         <Image
           width={24}
           height={24}
@@ -36,8 +42,13 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
           className="h-full"
           alt="logo of the project"
         />
-        <h1 className="truncate text-xl">Project Manager</h1>
-      </section>
+        {navbarOpen && <h1 className="truncate text-xl">Project M.</h1>}
+        {navbarOpen ? (
+          <CaretDoubleLeft size={24} weight="thin" cursor="pointer" />
+        ) : (
+          <CaretDoubleRight size={24} weight="thin" cursor="pointer" />
+        )}
+      </motion.section>
 
       <DropdownMenu.Root onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger asChild>
@@ -86,7 +97,7 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
                   </DropdownMenu.Item>
 
                   <Link href="/api/auth/logout">
-                    <DropdownMenu.Item className="relative flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none hover:bg-violet-main hover:text-red-400 data-[disabled]:pointer-events-none">
+                    <DropdownMenu.Item className="relative flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none hover:bg-violet-main hover:text-red-400">
                       Exit
                     </DropdownMenu.Item>
                   </Link>

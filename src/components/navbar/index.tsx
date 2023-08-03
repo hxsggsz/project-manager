@@ -23,7 +23,7 @@ interface NavBarProps {
 
 const variantsMenu = {
   open: { width: '250px' },
-  closed: { width: '68px' },
+  closed: { width: '80px' },
 }
 
 export const Navbar = (props: NavBarProps) => {
@@ -41,7 +41,7 @@ export const Navbar = (props: NavBarProps) => {
       animate={props.isOpen ? 'open' : 'closed'}
       variants={variantsMenu}
       onClick={props.handleOpen}
-      className="relative mt-[90px] w-1/4 cursor-pointer overflow-x-hidden"
+      className="relative mt-[84px] w-1/4 cursor-pointer overflow-x-hidden border-r border-slate-300 scrollbar scrollbar-track-inherit scrollbar-thumb-violet-main scrollbar-thumb-rounded-lg scrollbar-w-2"
     >
       <motion.ul
         layout
@@ -52,7 +52,8 @@ export const Navbar = (props: NavBarProps) => {
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'home' ? 1.05 : 1 }}
-            className="flex gap-3 rounded-lg py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
+            data-open={props.isOpen}
+            className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <House
               size={24}
@@ -68,7 +69,8 @@ export const Navbar = (props: NavBarProps) => {
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'message' ? 1.05 : 1 }}
-            className="flex gap-3 rounded-lg py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
+            data-open={props.isOpen}
+            className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <ChatTeardropText
               size={24}
@@ -84,7 +86,8 @@ export const Navbar = (props: NavBarProps) => {
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'tasks' ? 1.05 : 1 }}
-            className="flex gap-3 rounded-lg py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
+            data-open={props.isOpen}
+            className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <Kanban
               size={24}
@@ -100,7 +103,8 @@ export const Navbar = (props: NavBarProps) => {
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1, scale: hash === 'members' ? 1.05 : 1 }}
-            className="flex gap-3 rounded-lg py-2 hover:bg-slate-600/20 max-[570px]:rounded-full max-[570px]:p-2"
+            data-open={props.isOpen}
+            className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <Users
               size={24}
@@ -145,12 +149,6 @@ export const Navbar = (props: NavBarProps) => {
                     onClick={(ev) => ev.stopPropagation()}
                     transition={{ duration: 0.3, ease: 'backInOut' }}
                   >
-                    <ProjectList
-                      id={proj._id}
-                      item={proj.props.name}
-                      handleEdit={() => {}}
-                      handleDelete={() => mutate(proj._id)}
-                    />
                     <ProjectList
                       id={proj._id}
                       item={proj.props.name}

@@ -38,6 +38,18 @@ export const Navbar = (props: NavBarProps) => {
     setHash(asPath.split('#')[1])
   }, [asPath])
 
+  function handleDelete(id: string) {
+    if (typeof window !== 'undefined') {
+      const confirmed = window.confirm(
+        'you really want to delete this project?',
+      )
+
+      if (confirmed) {
+        mutate(id)
+      }
+    }
+  }
+
   return (
     <motion.nav
       layout
@@ -49,7 +61,7 @@ export const Navbar = (props: NavBarProps) => {
       <motion.ul
         layout
         data-open={props.isOpen}
-        className="grid gap-2 py-7 data-[open=false]:place-items-center data-[open=true]:px-7"
+        className="grid gap-2 py-7 data-[open=false]:place-items-center data-[open=true]:px-3"
       >
         <Link href="/dashboard#home" onClick={(ev) => ev.stopPropagation()}>
           <motion.li
@@ -122,7 +134,7 @@ export const Navbar = (props: NavBarProps) => {
 
       <article
         data-open={props.isOpen}
-        className="grid gap-2 overflow-y-auto border-t border-slate-300 pb-5 pt-7 data-[open=false]:place-items-center data-[open=true]:px-7"
+        className="grid gap-2 overflow-y-auto border-t border-slate-300 pb-5 pt-7 data-[open=false]:place-items-center data-[open=true]:px-3"
       >
         {props.isOpen ? (
           <>
@@ -155,7 +167,7 @@ export const Navbar = (props: NavBarProps) => {
                       id={proj._id}
                       item={proj.props.name}
                       handleEdit={() => {}}
-                      handleDelete={() => mutate(proj._id)}
+                      handleDelete={() => handleDelete(proj._id)}
                     />
                   </motion.li>
                 ))}

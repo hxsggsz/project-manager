@@ -56,7 +56,7 @@ export const ProjectList = ({
 
                   <DropdownMenu.Item
                     onSelect={() => handleDelete(id)}
-                    className="flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none text-red-400 outline-none hover:bg-violet-main data-[disabled]:pointer-events-none"
+                    className="flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none text-red-400 outline-none data-[disabled]:pointer-events-none hover:bg-violet-main"
                   >
                     Delete project
                   </DropdownMenu.Item>

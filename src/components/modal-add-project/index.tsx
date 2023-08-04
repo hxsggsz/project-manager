@@ -51,9 +51,6 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
       name,
       isPublic,
       userId: user.sub,
-      participantName: user.name,
-      participantPhoto: user.profile_photo,
-      participantUsername: user.username,
     }
     mutate(body)
 

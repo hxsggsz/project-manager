@@ -14,7 +14,7 @@ import { Input } from '../input'
 import jwtDecode from 'jwt-decode'
 import { User } from '@/utils/types/dashboard'
 import { useUpdateProject } from '@/hooks/useProject'
-import { useUpdateProjectStore } from '@/store/update-project-store'
+import { useProjectIdStore } from '@/store/project-id-store'
 
 export const ModalUpdateProject = ({
   isOpen,
@@ -27,7 +27,7 @@ export const ModalUpdateProject = ({
   const [isPublic, setIsPublic] = useState(false)
   const { mutate, isLoading, isSuccess } = useUpdateProject()
 
-  const projectId = useUpdateProjectStore((state) => state.projectId)
+  const projectId = useProjectIdStore((state) => state.projectId)
 
   const {
     watch,

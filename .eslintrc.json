@@ -2,6 +2,7 @@
   "extends": ["next/core-web-vitals", "@rocketseat/eslint-config/react", "plugin:tailwindcss/recommended"],
   "rules": {
     "no-undef": "off",
-    "camelcase": "off"
+    "camelcase": "off",
+    "no-use-before-define": "off"
   }
 }

@@ -6,9 +6,6 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 interface NewProjectProps {
   name: string
   isPublic: boolean
-  participantName: string
-  participantPhoto: string
-  participantUsername: string
 }
 
 interface UpdateProjectProps {

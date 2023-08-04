@@ -3,7 +3,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { ModalUpdateProject } from '../modal-update-project'
-import { useUpdateProjectStore } from '@/store/update-project-store'
+import { useProjectIdStore } from '@/store/project-id-store'
 
 interface ProjectListProps {
   id: string
@@ -16,9 +16,7 @@ export const ProjectList = ({ id, item, handleDelete }: ProjectListProps) => {
   const [isOpen, setIsUpdateProjOpen] = useState(false)
   const [projectMenuOpen, setProjectMenuOpen] = useState(false)
 
-  const updateProjectId = useUpdateProjectStore(
-    (state) => state.updateProjectId,
-  )
+  const updateProjectId = useProjectIdStore((state) => state.updateProjectId)
 
   function handleUpdateProjectModal(id: string) {
     updateProjectId(id)

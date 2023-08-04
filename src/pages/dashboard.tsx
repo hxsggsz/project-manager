@@ -13,7 +13,6 @@ export default function Dashboard({ user }: DashboardProps) {
   const { width } = useSizeScreen()
   const [isOpen, setIsOpen] = useState(true)
   const handleOpen = () => setIsOpen((prev) => !prev)
-
   const { data } = useGetProjects(user.sub)
 
   useEffect(() => {
@@ -26,10 +25,10 @@ export default function Dashboard({ user }: DashboardProps) {
       <Navbar
         isOpen={isOpen}
         handleOpen={handleOpen}
-        projects={data?.projects || []}
+        projects={data?.projects}
       />
-      <div className="flex w-full justify-center">
-        <Home projects={data?.projects || []} />
+      <div className="flex w-full justify-center max-sm:w-4/5">
+        <Home projects={data?.projects} />
       </div>
     </div>
   )
@@ -46,6 +45,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
+  /**
+   * todo:
+   * tentar usar ssr com react query
+   * mostrar o componente home só na url dashboard#home
+   * criar testes
+   */
   const user: User = jwtDecode(token.toString())
   // const projectsResponse = await api.get(`project/${user.sub}`, {
   //   headers: { Authorization: `Bearer ${token}` },

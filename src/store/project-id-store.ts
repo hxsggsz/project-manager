@@ -5,7 +5,7 @@ interface EditProjectProps {
   updateProjectId: (id: string) => void
 }
 
-export const useUpdateProjectStore = create<EditProjectProps>((set) => ({
+export const useProjectIdStore = create<EditProjectProps>((set) => ({
   projectId: '',
   updateProjectId: (id: string) => set({ projectId: id }),
 }))

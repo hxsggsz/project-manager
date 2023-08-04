@@ -16,11 +16,12 @@ import { ModalAddProject } from '../modal-add-project'
 import { ProjectList } from '../project-list'
 import { Project } from '@/utils/types/dashboard'
 import { useDeleteProject } from '@/hooks/useProject'
+import { Spinner } from '../spinner'
 
 interface NavBarProps {
   isOpen: boolean
   handleOpen: () => void
-  projects: Project[]
+  projects: Project[] | undefined
 }
 
 const variantsMenu = {
@@ -168,23 +169,31 @@ export const Navbar = (props: NavBarProps) => {
             </div>
             <ul>
               <AnimatePresence>
-                {props.projects.map((proj) => (
-                  <motion.li
-                    layout
-                    key={proj._id}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    onClick={(ev) => ev.stopPropagation()}
-                    transition={{ duration: 0.3, ease: 'backInOut' }}
-                  >
-                    <ProjectList
-                      id={proj._id}
-                      item={proj.props.name}
-                      handleDelete={() => handleDelete(proj._id)}
-                    />
-                  </motion.li>
-                ))}
+                {!props.projects ? (
+                  <div className="grid h-28 w-full place-items-center">
+                    <Spinner size={38} color="000" />
+                  </div>
+                ) : props.projects.length < 1 ? (
+                  <p>No projects yet</p>
+                ) : (
+                  props.projects.map((proj) => (
+                    <motion.li
+                      layout
+                      key={proj.id}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      onClick={(ev) => ev.stopPropagation()}
+                      transition={{ duration: 0.3, ease: 'backInOut' }}
+                    >
+                      <ProjectList
+                        id={proj.id}
+                        item={proj.name}
+                        handleDelete={() => handleDelete(proj.id)}
+                      />
+                    </motion.li>
+                  ))
+                )}
               </AnimatePresence>
             </ul>
           </>

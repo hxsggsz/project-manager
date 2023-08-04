@@ -15,13 +15,14 @@ export interface Projects {
 }
 
 export interface Project {
-  _id: string
-  props: Props
+  id: string
+  name: string
+  userId: string
+  isPublic: boolean
+  createdAt: Date
+  _count: Count
 }
 
-export interface Props {
-  name: string
-  isPublic: boolean
-  ownerId: string
-  createdAt: Date
+export interface Count {
+  participants: number
 }

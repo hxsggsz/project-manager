@@ -53,11 +53,7 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
             <Image
               width={38}
               height={38}
-              src={
-                user.profile_photo === ''
-                  ? '/defaultUser.png'
-                  : user.profile_photo
-              }
+              src={user.profile_photo}
               alt={`profile picture of ${user.name}`}
               className="pointer-events-none select-none rounded-full"
             />

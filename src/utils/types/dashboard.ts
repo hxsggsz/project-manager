@@ -23,5 +23,5 @@ export interface Props {
   name: string
   isPublic: boolean
   ownerId: string
-  createdAt: string
+  createdAt: Date
 }

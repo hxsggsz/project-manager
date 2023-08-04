@@ -4,20 +4,14 @@
 
 @layer base {
   body {
-    font-family: Inter, system-ui, sans-serif;
-    background: rgb(241 245 249);
+    @apply bg-slate-200;
   }
 
   h1 {
-    font-size: 32px;
-    font-weight: 700;
+    @apply font-bold text-lg;
   }
 
   p {
-    font-size: 24px;
-  }
-
-  a {
-    text-decoration: none;
+    @apply font-medium text-base
   }
 }

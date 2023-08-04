@@ -28,7 +28,8 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
         variants={variantsMenu}
         onClick={handleNavBar}
         animate={navbarOpen ? 'open' : 'closed'}
-        className="sticky left-0 top-0 z-30 flex h-full max-w-[250px] select-none items-center justify-center gap-4 border-r border-slate-300 px-3 py-[30px] backdrop-blur-sm"
+        data-open={navbarOpen}
+        className="sticky left-0 top-0 z-30 flex h-full max-w-[250px] cursor-pointer select-none items-center gap-4 border-r border-slate-300 px-3 py-[30px] backdrop-blur-sm data-[open=false]:justify-center"
       >
         <Image
           width={24}

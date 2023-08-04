@@ -17,7 +17,7 @@ export default function Dashboard({ user }: DashboardProps) {
   const { data } = useGetProjects(user.sub)
 
   useEffect(() => {
-    width <= 570 ? setIsOpen(false) : setIsOpen(true)
+    width <= 625 ? setIsOpen(false) : setIsOpen(true)
   }, [width])
 
   return (
@@ -28,8 +28,8 @@ export default function Dashboard({ user }: DashboardProps) {
         handleOpen={handleOpen}
         projects={data?.projects || []}
       />
-      <div className="flex w-3/4 justify-center max-md:w-full">
-        <Home userId={user.sub} />
+      <div className="flex w-full justify-center">
+        <Home projects={data?.projects || []} />
       </div>
     </div>
   )

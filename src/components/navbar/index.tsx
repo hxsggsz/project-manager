@@ -181,7 +181,6 @@ export const Navbar = (props: NavBarProps) => {
                     <ProjectList
                       id={proj._id}
                       item={proj.props.name}
-                      handleEdit={() => {}}
                       handleDelete={() => handleDelete(proj._id)}
                     />
                   </motion.li>

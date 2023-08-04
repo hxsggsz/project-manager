@@ -11,6 +11,12 @@ interface NewProjectProps {
   participantUsername: string
 }
 
+interface UpdateProjectProps {
+  name: string
+  isPublic: boolean
+  projectId: string
+}
+
 const token = getCookie('token')
 export const useGetProjects = (userId: string) => {
   const projects = useQuery<Projects>('projects', async () => {
@@ -32,6 +38,27 @@ export const useCreateProject = (userId: string | undefined) => {
           Authorization: `Bearer ${token}`,
         },
       })
+    },
+    onSuccess: () => {
+      query.invalidateQueries(['projects'])
+    },
+  })
+  return mutate
+}
+
+export const useUpdateProject = () => {
+  const query = useQueryClient()
+  const mutate = useMutation({
+    mutationFn: (data: UpdateProjectProps) => {
+      return api.put(
+        `/project/${data.projectId}`,
+        { name: data.name, isPublic: data.isPublic },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
     },
     onSuccess: () => {
       query.invalidateQueries(['projects'])

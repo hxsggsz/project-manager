@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useMemo, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { Modal } from '../modal'
 import * as HoverCard from '@radix-ui/react-hover-card'
 import * as Switch from '@radix-ui/react-switch'
@@ -13,7 +13,8 @@ import { useForm } from 'react-hook-form'
 import { Input } from '../input'
 import jwtDecode from 'jwt-decode'
 import { User } from '@/utils/types/dashboard'
-import { useCreateProject } from '@/hooks/useProject'
+import { useUpdateProject } from '@/hooks/useProject'
+import { useUpdateProjectStore } from '@/store/update-project-store'
 
 export const ModalUpdateProject = ({
   isOpen,
@@ -24,17 +25,9 @@ export const ModalUpdateProject = ({
 }) => {
   const token = getCookie('token')
   const [isPublic, setIsPublic] = useState(false)
+  const { mutate, isLoading, isSuccess } = useUpdateProject()
 
-  const user = useMemo(() => {
-    if (!token) {
-      return
-    }
-
-    const userDecode: User = jwtDecode(token.toString())
-    return userDecode
-  }, [token])
-
-  const { mutate, isError, isLoading } = useCreateProject(user?.sub)
+  const projectId = useUpdateProjectStore((state) => state.projectId)
 
   const {
     watch,
@@ -46,6 +39,13 @@ export const ModalUpdateProject = ({
     resolver: zodResolver(CreateProjectSchema),
     defaultValues: { name: '' },
   })
+  const user = useMemo(() => {
+    if (!token) {
+      return
+    }
+    const userDecode: User = jwtDecode(token.toString())
+    return userDecode
+  }, [token])
 
   function onSubmit({ name }: CreateProjectProps) {
     if (!user) {
@@ -54,21 +54,20 @@ export const ModalUpdateProject = ({
 
     const body = {
       name,
+      projectId,
       isPublic,
-      userId: user.sub,
-      participantName: user.name,
-      participantPhoto: user.profile_photo,
-      participantUsername: user.username,
     }
     mutate(body)
+  }
 
-    if (!isError) {
+  useEffect(() => {
+    if (isSuccess) {
       setIsOpen(false)
       reset({
         name: '',
       })
     }
-  }
+  }, [isSuccess, reset, setIsOpen])
 
   return (
     <Modal.Root isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -125,7 +124,7 @@ export const ModalUpdateProject = ({
               isLoading={isLoading}
               disabled={watch('name') === '' || isLoading}
             >
-              Create
+              Update
             </Button>
           </div>
         </form>

@@ -3,23 +3,27 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { ModalUpdateProject } from '../modal-update-project'
+import { useUpdateProjectStore } from '@/store/update-project-store'
 
 interface ProjectListProps {
   id: string
   item: string
-  handleEdit: (id: string) => void
   handleDelete: (id: string) => void
 }
 
-export const ProjectList = ({
-  id,
-  item,
-  handleEdit,
-  handleDelete,
-}: ProjectListProps) => {
+export const ProjectList = ({ id, item, handleDelete }: ProjectListProps) => {
   const [isHover, setIsHover] = useState(false)
+  const [isOpen, setIsUpdateProjOpen] = useState(false)
   const [projectMenuOpen, setProjectMenuOpen] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+
+  const updateProjectId = useUpdateProjectStore(
+    (state) => state.updateProjectId,
+  )
+
+  function handleUpdateProjectModal(id: string) {
+    updateProjectId(id)
+    setIsUpdateProjOpen(true)
+  }
 
   return (
     <motion.div
@@ -50,7 +54,7 @@ export const ProjectList = ({
                   exit={{ opacity: 0 }}
                 >
                   <DropdownMenu.Item
-                    onSelect={() => setIsOpen(true)}
+                    onSelect={() => handleUpdateProjectModal(id)}
                     className="flex h-[25px] cursor-pointer select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none hover:bg-violet-main hover:text-white"
                   >
                     Edit project
@@ -70,7 +74,7 @@ export const ProjectList = ({
           </AnimatePresence>
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
-      <ModalUpdateProject isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ModalUpdateProject isOpen={isOpen} setIsOpen={setIsUpdateProjOpen} />
     </motion.div>
   )
 }

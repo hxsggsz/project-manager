@@ -4,7 +4,7 @@ import { Dispatch, ReactNode, SetStateAction } from 'react'
 interface RootModalProps {
   children: ReactNode
   isOpen: boolean
-  setIsOpen: Dispatch<SetStateAction<boolean>>
+  setIsOpen: Dispatch<SetStateAction<boolean>> | ((open: boolean) => void)
 }
 
 export const RootModal = ({ children, isOpen, setIsOpen }: RootModalProps) => {

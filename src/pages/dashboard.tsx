@@ -15,7 +15,7 @@ export default function Dashboard({ user }: DashboardProps) {
   const { data } = useGetProjects(user.sub)
   const [isOpen, setIsOpen] = useState(true)
   const handleOpen = () => setIsOpen((prev) => !prev)
-
+  const a = ""
   useEffect(() => {
     width <= 625 ? setIsOpen(false) : setIsOpen(true)
   }, [width])

@@ -22,7 +22,6 @@ describe('Button', () => {
     render(<Button onClick={handleClick}>test</Button>)
     const buttonText = screen.getByText('test')
     userEvent.click(buttonText)
-    expect(true).toBe(false)
     await waitFor(() => expect(handleClick).toHaveBeenCalled())
   })
 })

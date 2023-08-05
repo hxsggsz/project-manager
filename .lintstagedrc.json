@@ -1,6 +1,0 @@
-{
-  "*.tsx": [
-    "next build",
-    "jest"
-  ]
-}

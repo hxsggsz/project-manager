@@ -1,3 +1,3 @@
 module.exports = {
-  '**/*.(ts|tsx)': () => 'npm run test',
+  '**/*.(ts|tsx)': () => 'jest',
 }

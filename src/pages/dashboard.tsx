@@ -15,7 +15,7 @@ export default function Dashboard({ user }: DashboardProps) {
   const { data } = useGetProjects(user.sub)
   const [isOpen, setIsOpen] = useState(true)
   const handleOpen = () => setIsOpen((prev) => !prev)
-  consdt a = ""
+
   useEffect(() => {
     width <= 625 ? setIsOpen(false) : setIsOpen(true)
   }, [width])
@@ -43,6 +43,7 @@ export default function Dashboard({ user }: DashboardProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const token = getCookie('token', ctx)
+
   if (!token) {
     return {
       redirect: {

@@ -9,7 +9,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 interface headerProps {
   user: User
   navbarOpen: boolean
-  handleNavBar: () => void
 }
 
 const variantsMenu = {
@@ -17,7 +16,7 @@ const variantsMenu = {
   closed: { width: '80px' },
 }
 
-export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
+export const Header = ({ user, navbarOpen }: headerProps) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <header
@@ -26,7 +25,6 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
     >
       <motion.section
         variants={variantsMenu}
-        onClick={handleNavBar}
         animate={navbarOpen ? 'open' : 'closed'}
         data-open={navbarOpen}
         className="sticky left-0 top-0 z-30 flex h-full max-w-[250px] cursor-pointer select-none items-center gap-4 border-r border-slate-300 px-3 py-[30px] backdrop-blur-sm data-[open=false]:justify-center"
@@ -43,7 +41,10 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
 
       <DropdownMenu.Root onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger asChild>
-          <div className="flex cursor-pointer items-center gap-2">
+          <div
+            data-testid="headerMenu"
+            className="flex cursor-pointer items-center gap-2"
+          >
             <section data-open={navbarOpen} className="max-[404px]:hidden">
               <h1 className="text-base font-normal">{user.name}</h1>
               <p className=" text-right text-sm text-slate-500">
@@ -59,9 +60,9 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
             />
             <span>
               {isOpen ? (
-                <CaretUp size={20} weight="thin" />
+                <CaretUp data-testid="arrowup" size={20} weight="thin" />
               ) : (
-                <CaretDown size={20} weight="thin" />
+                <CaretDown data-testid="down" size={20} weight="thin" />
               )}
             </span>
           </div>
@@ -71,10 +72,11 @@ export const Header = ({ user, navbarOpen, handleNavBar }: headerProps) => {
             {isOpen && (
               <DropdownMenu.Content
                 forceMount
-                className=" mr-6 min-w-[220px] rounded-md bg-slate-100 p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform]"
+                className="mr-6 min-w-[220px] rounded-md bg-slate-100 p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform]"
                 sideOffset={10}
               >
                 <motion.div
+                  data-testid="menu"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}

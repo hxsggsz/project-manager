@@ -13,7 +13,7 @@ export const Password = ({
     <>
       <button
         type="button"
-        data-cy="button-password"
+        data-testid="button"
         className="cursor-pointer"
         onClick={handleShowPassword}
       >
@@ -21,11 +21,16 @@ export const Password = ({
           <LockOpen
             size={38}
             weight="bold"
-            data-cy="lock-open"
+            data-testid="lock-open"
             className="p-2 text-slate-600"
           />
         ) : (
-          <Lock size={38} className="p-2 text-slate-600" weight="bold" />
+          <Lock
+            size={38}
+            weight="bold"
+            data-testid="lock-close"
+            className="p-2 text-slate-600"
+          />
         )}
       </button>
     </>

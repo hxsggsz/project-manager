@@ -2,7 +2,7 @@ import { Button } from '.'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-describe('Button', () => {
+describe('<Button/>', () => {
   it('should render the button content', () => {
     render(<Button>test</Button>)
     const testButton = screen.getByText('test')

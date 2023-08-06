@@ -1,5 +1,5 @@
 import { Participants } from '@/hooks/types/participants'
-import { api } from '@/lib/api'
+import { api } from '../../lib/api'
 import * as HoverCard from '@radix-ui/react-hover-card'
 import { getCookie } from 'cookies-next'
 import Image from 'next/image'
@@ -48,6 +48,7 @@ export const ParticipantsList = ({
 
       <HoverCard.Portal>
         <HoverCard.Content
+          data-testid="participantsList"
           className="grid w-[300px] place-items-center gap-y-4 rounded-md bg-white p-5 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] data-[state=open]:transition-all"
           sideOffset={5}
         >

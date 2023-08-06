@@ -6,14 +6,14 @@ import { Button } from '../button'
 import {
   CreateProjectProps,
   CreateProjectSchema,
-} from '@/utils/validations/create-project'
+} from '../../utils/validations/create-project'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getCookie } from 'cookies-next'
 import { useForm } from 'react-hook-form'
 import { Input } from '../input'
 import jwtDecode from 'jwt-decode'
-import { User } from '@/utils/types/dashboard'
-import { useCreateProject } from '@/hooks/useProject'
+import { User } from '../../utils/types/dashboard'
+import { useCreateProject } from '../../hooks/useProject'
 
 export const ModalAddProject = ({ children }: { children: ReactNode }) => {
   const token = getCookie('token')
@@ -63,7 +63,7 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <Modal.Root isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Modal.Root data-testid="add-project" isOpen={isOpen} setIsOpen={setIsOpen}>
       <Modal.Trigger>{children}</Modal.Trigger>
 
       <Modal.Content isOpen={isOpen}>

@@ -42,7 +42,10 @@ export const ParticipantsList = ({
         setProjectId(id)
       }}
     >
-      <HoverCard.Trigger className="text-violet-main underline">
+      <HoverCard.Trigger
+        data-testid="hover"
+        className="text-violet-main underline"
+      >
         {children}
       </HoverCard.Trigger>
 

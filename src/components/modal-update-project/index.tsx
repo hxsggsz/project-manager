@@ -6,22 +6,22 @@ import { Button } from '../button'
 import {
   CreateProjectProps,
   CreateProjectSchema,
-} from '@/utils/validations/create-project'
+} from '../../utils/validations/create-project'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getCookie } from 'cookies-next'
 import { useForm } from 'react-hook-form'
 import { Input } from '../input'
 import jwtDecode from 'jwt-decode'
-import { User } from '@/utils/types/dashboard'
-import { useUpdateProject } from '@/hooks/useProject'
-import { useProjectIdStore } from '@/store/project-id-store'
+import { User } from '../../utils/types/dashboard'
+import { useUpdateProject } from '../../hooks/useProject'
+import { useProjectIdStore } from '../../store/project-id-store'
 
 export const ModalUpdateProject = ({
   isOpen,
   setIsOpen,
 }: {
   isOpen: boolean
-  setIsOpen: Dispatch<SetStateAction<boolean>>
+  setIsOpen: Dispatch<SetStateAction<boolean>> | (() => void)
 }) => {
   const token = getCookie('token')
   const [isPublic, setIsPublic] = useState(false)

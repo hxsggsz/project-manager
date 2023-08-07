@@ -3,7 +3,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { ModalUpdateProject } from '../modal-update-project'
-import { useProjectIdStore } from '@/store/project-id-store'
+import { useProjectIdStore } from '../../store/project-id-store'
 
 interface ProjectListProps {
   id: string
@@ -33,7 +33,7 @@ export const ProjectList = ({ id, item, handleDelete }: ProjectListProps) => {
         {item}
       </p>
       <DropdownMenu.Root onOpenChange={setProjectMenuOpen}>
-        <DropdownMenu.Trigger>
+        <DropdownMenu.Trigger data-testid="button">
           {isHover && (
             <DotsThree size={19} weight="bold" className="text-black" />
           )}
@@ -47,6 +47,7 @@ export const ProjectList = ({ id, item, handleDelete }: ProjectListProps) => {
                 sideOffset={10}
               >
                 <motion.div
+                  data-testid="menu"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

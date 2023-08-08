@@ -11,11 +11,10 @@ import {
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import { ModalAddProject } from '../modal-add-project'
 import { ProjectList } from '../project-list'
-import { Project } from '@/utils/types/dashboard'
-import { useDeleteProject } from '@/hooks/useProject'
+import { Project } from '../../utils/types/dashboard'
+import { useDeleteProject } from '../../hooks/useProject'
 import { Spinner } from '../spinner'
 
 interface NavBarProps {
@@ -33,13 +32,14 @@ const variantsMenu = {
 }
 
 export const Navbar = (props: NavBarProps) => {
-  const { asPath } = useRouter()
   const [hash, setHash] = useState('')
   const { mutate } = useDeleteProject()
 
   useEffect(() => {
-    setHash(asPath.split('#')[1])
-  }, [asPath])
+    const hash = window && window.location.hash ? window.location.hash : null
+    setHash(hash ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.hash])
 
   function handleDelete(id: string) {
     if (typeof window !== 'undefined') {
@@ -68,8 +68,9 @@ export const Navbar = (props: NavBarProps) => {
       >
         <motion.li
           initial={{ x: -100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1, scale: hash === 'home' ? 1.05 : 1 }}
+          animate={{ x: 0, opacity: 1, scale: hash === '#home' ? 1.05 : 1 }}
           data-open={props.isOpen}
+          data-testid="buttonOpenNav"
           className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
         >
           {props.isOpen ? (
@@ -82,14 +83,14 @@ export const Navbar = (props: NavBarProps) => {
         <Link href="/dashboard#home" onClick={(ev) => ev.stopPropagation()}>
           <motion.li
             initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1, scale: hash === 'home' ? 1.05 : 1 }}
+            animate={{ x: 0, opacity: 1, scale: hash === '#home' ? 1.05 : 1 }}
             data-open={props.isOpen}
             className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <House
               size={24}
-              data-select={hash === 'home'}
-              weight={hash === 'home' ? 'fill' : 'thin'}
+              data-select={hash === '#home'}
+              weight={hash === '#home' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
             {props.isOpen && <p className="text-base">Home</p>}
@@ -99,14 +100,18 @@ export const Navbar = (props: NavBarProps) => {
         <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#message">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1, scale: hash === 'message' ? 1.05 : 1 }}
+            animate={{
+              x: 0,
+              opacity: 1,
+              scale: hash === '#message' ? 1.05 : 1,
+            }}
             data-open={props.isOpen}
             className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <ChatTeardropText
               size={24}
-              data-select={hash === 'message'}
-              weight={hash === 'message' ? 'fill' : 'thin'}
+              data-select={hash === '#message'}
+              weight={hash === '#message' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
             {props.isOpen && <p className="text-base">Messages</p>}
@@ -116,14 +121,14 @@ export const Navbar = (props: NavBarProps) => {
         <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#tasks">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1, scale: hash === 'tasks' ? 1.05 : 1 }}
+            animate={{ x: 0, opacity: 1, scale: hash === '#tasks' ? 1.05 : 1 }}
             data-open={props.isOpen}
             className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <Kanban
               size={24}
-              data-select={hash === 'tasks'}
-              weight={hash === 'tasks' ? 'fill' : 'thin'}
+              data-select={hash === '#tasks'}
+              weight={hash === '#tasks' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
             {props.isOpen && <p className="text-base">Tasks</p>}
@@ -133,14 +138,18 @@ export const Navbar = (props: NavBarProps) => {
         <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#members">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1, scale: hash === 'members' ? 1.05 : 1 }}
+            animate={{
+              x: 0,
+              opacity: 1,
+              scale: hash === '#members' ? 1.05 : 1,
+            }}
             data-open={props.isOpen}
             className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <Users
               size={24}
-              data-select={hash === 'members'}
-              weight={hash === 'members' ? 'fill' : 'thin'}
+              data-select={hash === '#members'}
+              weight={hash === '#members' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
             {props.isOpen && <p className="text-base">Members</p>}

@@ -95,6 +95,7 @@ describe('<ModalAddProject/>', () => {
     )
     expect(button).toBeInTheDocument()
 
+    userEvent.hover(button)
     userEvent.click(button)
 
     expect(await screen.findByText('Create new project')).toBeInTheDocument()

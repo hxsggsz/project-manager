@@ -25,11 +25,6 @@
       "@testing-library/jest-dom",
       "cypress"
     ],
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
     "incremental": true
   },
   "include": [

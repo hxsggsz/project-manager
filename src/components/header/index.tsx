@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { CaretDown, CaretUp } from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { User } from '@/utils/types/dashboard'
+import { User } from '../../utils/types/dashboard'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 

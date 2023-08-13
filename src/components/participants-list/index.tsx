@@ -1,4 +1,4 @@
-import { Participants } from '@/hooks/types/participants'
+import { Participants } from '../../hooks/types/participants'
 import { api } from '../../lib/api'
 import * as HoverCard from '@radix-ui/react-hover-card'
 import { getCookie } from 'cookies-next'

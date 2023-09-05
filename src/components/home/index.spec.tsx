@@ -15,6 +15,7 @@ const mockProjects = new MockFactory<Project>(() => ({
     participants: faker.number.int(),
   },
 }))
+
 describe('<Home/>', () => {
   it('should open the create project modal', async () => {
     const queryclient = new QueryClient()

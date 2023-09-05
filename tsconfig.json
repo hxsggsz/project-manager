@@ -22,8 +22,8 @@
     "types": [
       "node",
       "jest",
+      "cypress",
       "@testing-library/jest-dom",
-      "cypress"
     ],
     "incremental": true
   },

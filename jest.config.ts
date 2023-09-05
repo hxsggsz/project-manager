@@ -8,12 +8,13 @@ export default {
   clearMocks: true,
   collectCoverage: false,
   modulePaths: ['<rootDir>/src/'],
-  collectCoverageFrom: ['src/**/*.ts(x)'],
+  collectCoverageFrom: ['src/**/spec.ts(x)'],
   testEnvironment: 'jest-environment-jsdom',
   setupFilesAfterEnv: ['<rootDir>/.jest/setup-test.ts'],
   moduleDirectories: ['node_modules', '<rootDir>/'],
   transformIgnorePatterns: ['!node_modules/', '!.next/'],
   roots: ['<rootDir>/src/'],
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
   // moduleNameMapper: {
   //   "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
   //   "\\.(css|less)$": "<rootDir>/assetsTransformer.js"
@@ -162,7 +163,6 @@ export default {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [

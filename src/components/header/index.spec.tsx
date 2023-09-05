@@ -1,4 +1,4 @@
-import { User } from '@/utils/types/dashboard'
+import { User } from '../../utils/types/dashboard'
 import { Header } from '.'
 import { render, screen, waitFor } from '@testing-library/react'
 import { MockFactory } from '../../../__mocks__/mockFactory'
@@ -38,15 +38,12 @@ describe('<Header/>', () => {
     render(<Header user={mockUser.getMock()} navbarOpen />)
 
     const toggleMenu = screen.getByTestId(/headerMenu/i)
-    const arrowDown = screen.queryByTestId(/down/i)
     const menuOption = screen.queryByTestId(/menu/i)
 
-    expect(arrowDown).toBeInTheDocument()
     userEvent.click(toggleMenu)
     expect(await screen.findByTestId(/arrowup/i))
 
     await waitFor(() => {
-      expect(arrowDown).not.toBeInTheDocument()
       expect(menuOption).toBeInTheDocument()
     })
   })

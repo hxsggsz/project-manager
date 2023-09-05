@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import { api } from '@/lib/api'
+import { api } from '../lib/api'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { Button } from '../components/button'
@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AuthButtons } from '../components/auth-buttons'
 import { At, GithubLogo, LinkedinLogo, Password } from '@phosphor-icons/react'
-import { LoginSchema, LoginTypes } from '@/utils/validations/login'
+import { LoginSchema, LoginTypes } from '../utils/validations/login'
 
 export default function LogIn() {
   const router = useRouter()

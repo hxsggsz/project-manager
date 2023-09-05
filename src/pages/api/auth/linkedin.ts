@@ -1,4 +1,4 @@
-import { api } from '@/lib/api'
+import { api } from '../../../lib/api'
 import { setCookie } from 'cookies-next'
 import type { NextApiRequest, NextApiResponse } from 'next'
 

@@ -10,12 +10,13 @@ import {
 } from '@phosphor-icons/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import { ModalAddProject } from '../modal-add-project'
 import { ProjectList } from '../project-list'
 import { Project } from '../../utils/types/dashboard'
 import { useDeleteProject } from '../../hooks/useProject'
 import { Spinner } from '../spinner'
+import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 
 interface NavBarProps {
   isOpen: boolean
@@ -32,14 +33,14 @@ const variantsMenu = {
 }
 
 export const Navbar = (props: NavBarProps) => {
+  const { asPath } = useRouter()
   const [hash, setHash] = useState('')
   const { mutate } = useDeleteProject()
 
   useEffect(() => {
-    const hash = window && window.location.hash ? window.location.hash : null
-    setHash(hash ?? '')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.hash])
+    const hash = asPath && asPath.split('#')[1]
+    setHash(hash)
+  }, [asPath])
 
   function handleDelete(id: string) {
     if (typeof window !== 'undefined') {
@@ -58,20 +59,21 @@ export const Navbar = (props: NavBarProps) => {
       layout
       animate={props.isOpen ? 'open' : 'closed'}
       variants={variantsMenu}
-      onClick={props.handleOpen}
-      className="relative mt-[84px] cursor-pointer overflow-x-hidden border-r border-slate-300 scrollbar scrollbar-track-inherit scrollbar-thumb-violet-main scrollbar-thumb-rounded-lg scrollbar-w-2"
+      data-open={props.isOpen}
+      className="relative mt-[84px] w-20 overflow-x-hidden border-r border-slate-300 scrollbar scrollbar-track-inherit scrollbar-thumb-violet-main scrollbar-thumb-rounded-lg scrollbar-w-2 data-[open=true]:max-sm:min-w-[80%]"
     >
       <motion.ul
         layout
         data-open={props.isOpen}
-        className="grid gap-2 py-7 data-[open=false]:place-items-center data-[open=true]:px-3"
+        className="grid gap-2 px-3 py-7 data-[open=false]:place-items-center"
       >
         <motion.li
+          data-open={props.isOpen}
+          onClick={props.handleOpen}
+          data-testid="buttonOpenNav"
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1, scale: hash === '#home' ? 1.05 : 1 }}
-          data-open={props.isOpen}
-          data-testid="buttonOpenNav"
-          className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
+          className="flex cursor-pointer gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
         >
           {props.isOpen ? (
             <ArrowLineLeft size={24} />
@@ -80,76 +82,84 @@ export const Navbar = (props: NavBarProps) => {
           )}
           {props.isOpen && <p className="text-base">Collapse</p>}
         </motion.li>
-        <Link href="/dashboard#home" onClick={(ev) => ev.stopPropagation()}>
+        <Link href="/dashboard">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1, scale: hash === '#home' ? 1.05 : 1 }}
+            animate={{
+              x: 0,
+              opacity: 1,
+              scale: !hash ? 1.05 : 1,
+            }}
             data-open={props.isOpen}
             className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <House
               size={24}
-              data-select={hash === '#home'}
-              weight={hash === '#home' ? 'fill' : 'thin'}
+              data-select={!hash}
+              weight={!hash ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
             {props.isOpen && <p className="text-base">Home</p>}
           </motion.li>
         </Link>
 
-        <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#message">
+        <Link href="/dashboard#message">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{
               x: 0,
               opacity: 1,
-              scale: hash === '#message' ? 1.05 : 1,
+              scale: hash === 'message' ? 1.05 : 1,
             }}
             data-open={props.isOpen}
             className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <ChatTeardropText
               size={24}
-              data-select={hash === '#message'}
-              weight={hash === '#message' ? 'fill' : 'thin'}
+              data-select={hash === 'message'}
+              weight={hash === 'message' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
             {props.isOpen && <p className="text-base">Messages</p>}
           </motion.li>
         </Link>
 
-        <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#tasks">
+        <Link href="/dashboard#tasks">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1, scale: hash === '#tasks' ? 1.05 : 1 }}
+            animate={{
+              x: 0,
+              opacity: 1,
+              scale: hash === 'tasks' ? 1.05 : 1,
+            }}
             data-open={props.isOpen}
             className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <Kanban
               size={24}
-              data-select={hash === '#tasks'}
-              weight={hash === '#tasks' ? 'fill' : 'thin'}
+              data-select={hash === 'tasks'}
+              weight={hash === 'tasks' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
             {props.isOpen && <p className="text-base">Tasks</p>}
           </motion.li>
         </Link>
 
-        <Link onClick={(ev) => ev.stopPropagation()} href="/dashboard#members">
+        <Link href="/dashboard#members">
           <motion.li
             initial={{ x: -100, opacity: 0 }}
             animate={{
               x: 0,
               opacity: 1,
-              scale: hash === '#members' ? 1.05 : 1,
+              scale: hash === 'members' ? 1.05 : 1,
             }}
             data-open={props.isOpen}
             className="flex gap-3 rounded-lg p-2 data-[open=false]:rounded-full hover:bg-slate-600/20"
           >
             <Users
               size={24}
-              data-select={hash === '#members'}
-              weight={hash === '#members' ? 'fill' : 'thin'}
+              data-select={hash === 'members'}
+              weight={hash === 'members' ? 'fill' : 'thin'}
               className="data-[select=true]:text-violet-main"
             />
             {props.isOpen && <p className="text-base">Members</p>}
@@ -163,10 +173,7 @@ export const Navbar = (props: NavBarProps) => {
       >
         {props.isOpen ? (
           <>
-            <div
-              onClick={(ev) => ev.stopPropagation()}
-              className="flex items-center justify-between gap-2"
-            >
+            <div className="flex items-center justify-between gap-2">
               <p className="text-xs font-bold">MY PROJECTS</p>
               <ModalAddProject>
                 <Plus
@@ -192,7 +199,6 @@ export const Navbar = (props: NavBarProps) => {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      onClick={(ev) => ev.stopPropagation()}
                       transition={{ duration: 0.3, ease: 'backInOut' }}
                     >
                       <ProjectList

@@ -27,6 +27,7 @@ export const ModalProjComponent = () => {
 
 describe('<ModalAddProject/>', () => {
   beforeEach(() => {
+    window.ResizeObserver = ResizeObserver
     mockedCreateProject.mockImplementation(() => ({}))
   })
   afterEach(() => {
@@ -40,7 +41,6 @@ describe('<ModalAddProject/>', () => {
   })
 
   it('should render the modal if is open', async () => {
-    window.ResizeObserver = ResizeObserver
     ModalProjComponent()
 
     const button = screen.getByText('open')
@@ -85,7 +85,6 @@ describe('<ModalAddProject/>', () => {
   })
 
   it('should show the info modal if hover on right text', async () => {
-    window.ResizeObserver = ResizeObserver
     ModalProjComponent()
 
     const button = screen.getByText('open')

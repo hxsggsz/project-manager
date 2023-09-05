@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { api } from '@/lib/api'
+import { api } from '../lib/api'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { Button } from '../components/button'
@@ -8,7 +8,7 @@ import { Input } from '../components/input'
 import { useEffect, useMemo, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { At, Password, UserCircle } from '@phosphor-icons/react'
-import { SignUpSchema, SignUpTypes } from '@/utils/validations/signup'
+import { SignUpSchema, SignUpTypes } from '../utils/validations/signup'
 
 export default function SignUp() {
   const router = useRouter()

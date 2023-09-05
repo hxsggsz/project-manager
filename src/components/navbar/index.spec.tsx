@@ -1,7 +1,7 @@
 import { Navbar } from '.'
 import { render, screen, waitFor } from '@testing-library/react'
 import { MockFactory } from '../../../__mocks__/mockFactory'
-import { Project } from '@/utils/types/dashboard'
+import { Project } from '../../utils/types/dashboard'
 import { faker } from '@faker-js/faker'
 import userEvent from '@testing-library/user-event'
 import { useRouter } from 'next/router'
@@ -61,7 +61,7 @@ describe('<Navbar/>', () => {
     expect(screen.queryByText(projects[0].name)).not.toBeInTheDocument()
   })
 
-  it('should not render the projects if navbar is close', async () => {
+  it('should render the projects if navbar is open', async () => {
     const mockOpen = jest.fn()
     const projects = mockProjects.getMockList(1)
     const queryClient = new QueryClient()
@@ -71,16 +71,19 @@ describe('<Navbar/>', () => {
       </QueryClientProvider>,
     )
 
-    await waitFor(() =>
-      expect(screen.getByText(projects[0].name)).toBeInTheDocument(),
-    )
+    expect(screen.getByText(projects[0].name)).toBeInTheDocument()
   })
 
   it('should not render the projects if navbar is close', async () => {
     const mockOpen = jest.fn()
     const projects = mockProjects.getMockList(1)
-    render(<Navbar isOpen={true} handleOpen={mockOpen} projects={projects} />)
+    const queryClient = new QueryClient()
 
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Navbar isOpen={true} handleOpen={mockOpen} projects={projects} />)
+      </QueryClientProvider>,
+    )
     const button = screen.getByTestId('buttonOpenNav')
 
     userEvent.click(button)

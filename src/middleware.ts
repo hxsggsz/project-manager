@@ -4,7 +4,6 @@ import type { NextRequest } from 'next/server'
 export function middleware(req: NextRequest, res: NextResponse) {
   const userCookie = req.cookies.has('token')
   if (!userCookie) {
-    console.log('[cookies]', userCookie)
     return NextResponse.redirect(new URL('/signup', req.url))
   }
 

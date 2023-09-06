@@ -37,7 +37,10 @@ export const Menu = (props: MenuProps) => {
   )
 
   return (
-    <DropdownMenu.Root onOpenChange={props.setIsOpen ?? setIsOpen}>
+    <DropdownMenu.Root
+      open={props.isOpen || isOpen}
+      onOpenChange={props.setIsOpen ?? setIsOpen}
+    >
       <DropdownMenu.Trigger asChild>{props.children}</DropdownMenu.Trigger>
 
       <AnimatePresence>

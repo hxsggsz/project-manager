@@ -44,9 +44,11 @@ describe('Menu', () => {
     beforeAll(() => {
       window.ResizeObserver = ResizeObserver
     })
-    it('opens the menu', async () => {
+
+    it('calls the setIsOpen function when click on it', async () => {
+      const setIsOpenMock = jest.fn()
       render(
-        <Menu items={menuItems}>
+        <Menu items={menuItems} setIsOpen={setIsOpenMock}>
           <button>open</button>
         </Menu>,
       )
@@ -54,26 +56,17 @@ describe('Menu', () => {
       const button = screen.getByRole('button', { name: 'open' })
       userEvent.click(button)
 
-      await waitFor(() =>
-        expect(screen.getByText(menuItems[0].name)).toBeInTheDocument(),
-      )
+      await waitFor(() => expect(setIsOpenMock).toHaveBeenCalledTimes(1))
     })
 
     it('calls the onSelect function when select one option', async () => {
       render(
-        <Menu items={menuItems}>
+        <Menu items={menuItems} isOpen>
           <button>open</button>
         </Menu>,
       )
 
-      const button = screen.getByRole('button', { name: 'open' })
-      userEvent.click(button)
-
-      await waitFor(() =>
-        expect(screen.getByText(menuItems[0].name)).toBeInTheDocument(),
-      )
-
-      userEvent.click(screen.getByText(menuItems[0].name))
+      await waitFor(() => userEvent.click(screen.getByText(menuItems[0].name)))
 
       await waitFor(() =>
         expect(menuItems[0].onSelect).toHaveBeenCalledTimes(1),

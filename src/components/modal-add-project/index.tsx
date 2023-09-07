@@ -1,6 +1,5 @@
 import { ReactNode, useMemo, useState } from 'react'
 import { Modal } from '../modal'
-import * as HoverCard from '@radix-ui/react-hover-card'
 import * as Switch from '@radix-ui/react-switch'
 import { Button } from '../button'
 import {
@@ -14,6 +13,7 @@ import { Input } from '../input'
 import jwtDecode from 'jwt-decode'
 import { User } from '../../utils/types/dashboard'
 import { useCreateProject } from '../../hooks/useProject'
+import { PopUp } from '../popup'
 
 export const ModalAddProject = ({ children }: { children: ReactNode }) => {
   const token = getCookie('token')
@@ -81,25 +81,15 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
             >
               <Switch.Thumb className="block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-violet-main shadow-md transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px] data-[state=checked]:bg-white" />
             </Switch.Root>
-            <HoverCard.Root>
-              <HoverCard.Trigger className="text-violet-main underline">
-                This project is public?
-              </HoverCard.Trigger>
-
-              <HoverCard.Portal>
-                <HoverCard.Content
-                  className="w-[300px] rounded-md bg-white p-5 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] data-[state=open]:transition-all"
-                  sideOffset={5}
-                >
-                  <p className="text-base font-semibold">
-                    This mean that everyone with the link of this project can
+            <PopUp
+              content="This mean that everyone with the link of this project can
                     access it and it tasks but cannot make any new tasks and
-                    chat
-                  </p>
-                  <HoverCard.Arrow className="fill-white" />
-                </HoverCard.Content>
-              </HoverCard.Portal>
-            </HoverCard.Root>
+                    chat"
+            >
+              <p className="text-violet-main underline">
+                This project is public?
+              </p>
+            </PopUp>
           </label>
 
           <Input.Root>

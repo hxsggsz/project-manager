@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ModalAddProject } from '.'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useCreateProject } from '../../hooks/useProject'
 
@@ -98,7 +98,7 @@ describe('<ModalAddProject/>', () => {
     userEvent.click(button)
 
     expect(await screen.findByText('Create new project')).toBeInTheDocument()
-    userEvent.hover(await hover)
+    await act(async () => userEvent.hover(await hover))
     expect(await hoverText).toBeInTheDocument()
   })
 })

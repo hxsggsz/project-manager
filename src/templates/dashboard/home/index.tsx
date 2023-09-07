@@ -1,6 +1,6 @@
 import { Plus } from '@phosphor-icons/react'
-import { ModalAddProject } from '../modal-add-project'
-import { Project } from '../../utils/types/dashboard'
+import { ModalAddProject } from '../../modal-add-project'
+import { Project } from '../../../utils/types/dashboard'
 import { Table } from '../table'
 
 interface HomeProps {

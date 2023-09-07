@@ -1,14 +1,14 @@
 import { GetServerSideProps } from 'next'
-import { Header } from '../components/header'
 import { getCookie } from 'cookies-next'
 import jwtDecode from 'jwt-decode'
 import { User, DashboardProps } from '../utils/types/dashboard'
-import { Navbar } from '../components/navbar'
 import { useState, useEffect } from 'react'
 import useSizeScreen from '../hooks/useSizeScreen'
-import { Home } from '../components/home'
-import { useGetProjects } from '../hooks/useProject'
+import { Home } from '../templates/dashboard/home'
 import Head from 'next/head'
+import { useGetProjects } from '../services/hooks/useProject'
+import { Header } from '../templates/header'
+import { Navbar } from '../templates/navbar'
 
 export default function Dashboard({ user }: DashboardProps) {
   const { width } = useSizeScreen()

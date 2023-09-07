@@ -11,12 +11,12 @@ import {
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { ModalAddProject } from '../modal-add-project'
-import { ProjectList } from '../project-list'
+import { ProjectList } from '../../components/project-list'
 import { Project } from '../../utils/types/dashboard'
-import { useDeleteProject } from '../../hooks/useProject'
-import { Spinner } from '../spinner'
+import { Spinner } from '../../components/spinner'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import { useDeleteProject } from '../../services/hooks/useProject'
 
 interface NavBarProps {
   isOpen: boolean

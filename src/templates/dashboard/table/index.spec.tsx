@@ -1,8 +1,8 @@
 import { Table } from '.'
 import { render, screen } from '@testing-library/react'
-import { MockFactory } from '../../../__mocks__/mockFactory'
-import { Project } from '@/utils/types/dashboard'
+import { MockFactory } from '../../../../__mocks__/mockFactory'
 import { faker } from '@faker-js/faker'
+import { Project } from '../../../utils/types/dashboard'
 
 const mockProjects = new MockFactory<Project>(() => ({
   id: faker.string.uuid(),

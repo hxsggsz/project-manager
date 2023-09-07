@@ -1,7 +1,7 @@
-import { Project } from '../../utils/types/dashboard'
-import { Spinner } from '../spinner'
+import { Project } from '../../../utils/types/dashboard'
 import { ParticipantsList } from '../participants-list'
-import useSizeScreen from '../../hooks/useSizeScreen'
+import useSizeScreen from '../../../hooks/useSizeScreen'
+import { Spinner } from '../../../components/spinner'
 
 interface TableProps {
   projects: Project[] | undefined

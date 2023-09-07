@@ -2,9 +2,9 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { CaretDown } from '@phosphor-icons/react'
 import { User } from '../../utils/types/dashboard'
-import { MenuItem } from '../menu/types'
-import { Menu } from '../menu'
 import { motion } from 'framer-motion'
+import { Menu } from '../../components/menu'
+import { MenuItem } from '../../components/menu/types'
 
 interface headerProps {
   user: User

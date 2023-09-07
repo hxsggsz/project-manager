@@ -1,11 +1,11 @@
 import { cleanup, renderHook, waitFor } from '@testing-library/react'
 import { useGetParticipants } from './useParticipants'
-import { wrapper } from '../../__mocks__/hook-wrapper'
-import { api } from '../lib/api'
-import { MockFactory } from '../../__mocks__/mockFactory'
 import { Participants } from './types/participants'
 import { faker } from '@faker-js/faker'
 import MockAdapter from 'axios-mock-adapter'
+import { MockFactory } from '../../../__mocks__/mockFactory'
+import { api } from '../../lib/api'
+import { wrapper } from '../../../__mocks__/hook-wrapper'
 
 const mockParticipants = new MockFactory<Participants>(() => ({
   allParticipants: [

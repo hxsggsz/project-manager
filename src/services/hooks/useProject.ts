@@ -1,7 +1,7 @@
-import { api } from '../lib/api'
-import { Projects } from '../utils/types/dashboard'
+import { api } from '../../lib/api'
 import { getCookie } from 'cookies-next'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { Projects } from '../../utils/types/dashboard'
 
 interface NewProjectProps {
   name: string

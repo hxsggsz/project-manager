@@ -2,8 +2,8 @@ import { DotsThree } from '@phosphor-icons/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
-import { ModalUpdateProject } from '../modal-update-project'
-import { useProjectIdStore } from '../../store/project-id-store'
+import { useProjectIdStore } from '../../stores/project-id-store'
+import { ModalUpdateProject } from '../../templates/modal-update-project'
 
 interface ProjectListProps {
   id: string

@@ -1,35 +1,33 @@
-import { ReactNode, useMemo, useState } from 'react'
-import { Modal } from '../modal'
-import * as Switch from '@radix-ui/react-switch'
-import { Button } from '../button'
+import { useEffect, useMemo, useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { getCookie } from 'cookies-next'
+import { useForm } from 'react-hook-form'
+import jwtDecode from 'jwt-decode'
+import { User } from '../../utils/types/dashboard'
+import { Modal } from '../../components/modal'
+import { Switch } from '../../components/switch'
+import { PopUp } from '../../components/popup'
+import { Input } from '../../components/input'
+import { Button } from '../../components/button'
+import { useUpdateProject } from '../../services/hooks/useProject'
+import { useProjectIdStore } from '../../stores/project-id-store'
 import {
   CreateProjectProps,
   CreateProjectSchema,
 } from '../../utils/validations/create-project'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { getCookie } from 'cookies-next'
-import { useForm } from 'react-hook-form'
-import { Input } from '../input'
-import jwtDecode from 'jwt-decode'
-import { User } from '../../utils/types/dashboard'
-import { useCreateProject } from '../../hooks/useProject'
-import { PopUp } from '../popup'
 
-export const ModalAddProject = ({ children }: { children: ReactNode }) => {
+export const ModalUpdateProject = ({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>> | (() => void)
+}) => {
   const token = getCookie('token')
-  const [isOpen, setIsOpen] = useState(false)
   const [isPublic, setIsPublic] = useState(false)
+  const { mutate, isLoading, isSuccess } = useUpdateProject()
 
-  const user = useMemo(() => {
-    if (!token) {
-      return
-    }
-
-    const userDecode: User = jwtDecode(token.toString())
-    return userDecode
-  }, [token])
-
-  const { mutate, isError, isLoading } = useCreateProject(user?.sub)
+  const projectId = useProjectIdStore((state) => state.projectId)
 
   const {
     watch,
@@ -41,6 +39,13 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
     resolver: zodResolver(CreateProjectSchema),
     defaultValues: { name: '' },
   })
+  const user = useMemo(() => {
+    if (!token) {
+      return
+    }
+    const userDecode: User = jwtDecode(token.toString())
+    return userDecode
+  }, [token])
 
   function onSubmit({ name }: CreateProjectProps) {
     if (!user) {
@@ -49,38 +54,31 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
 
     const body = {
       name,
+      projectId,
       isPublic,
-      userId: user.sub,
     }
     mutate(body)
+  }
 
-    if (!isError) {
+  useEffect(() => {
+    if (isSuccess) {
       setIsOpen(false)
       reset({
         name: '',
       })
     }
-  }
+  }, [isSuccess, reset, setIsOpen])
 
   return (
-    <Modal.Root data-testid="add-project" isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Modal.Trigger>{children}</Modal.Trigger>
-
+    <Modal.Root isOpen={isOpen} setIsOpen={setIsOpen}>
       <Modal.Content isOpen={isOpen}>
-        <Modal.Title title="Create new project" />
+        <Modal.Title title="Update project" />
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col items-center justify-start gap-2"
         >
           <label className="flex w-full gap-2 font-semibold">
-            <Switch.Root
-              defaultChecked={isPublic}
-              onCheckedChange={setIsPublic}
-              className="relative h-[25px] w-[42px] cursor-pointer rounded-full border border-slate-300 shadow-md outline-none data-[state=checked]:bg-violet-main focus:shadow-[0_0_0_2px] focus:shadow-black"
-              id="airplane-mode"
-            >
-              <Switch.Thumb className="block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-violet-main shadow-md transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px] data-[state=checked]:bg-white" />
-            </Switch.Root>
+            <Switch isChecked={isPublic} setIsChecked={setIsPublic} />
             <PopUp
               content="This mean that everyone with the link of this project can
                     access it and it tasks but cannot make any new tasks and
@@ -109,7 +107,7 @@ export const ModalAddProject = ({ children }: { children: ReactNode }) => {
               isLoading={isLoading}
               disabled={watch('name') === '' || isLoading}
             >
-              Create
+              Update
             </Button>
           </div>
         </form>

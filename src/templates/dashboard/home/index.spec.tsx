@@ -1,7 +1,7 @@
 import { Home } from '.'
 import { render, screen } from '@testing-library/react'
-import { MockFactory } from '../../../__mocks__/mockFactory'
-import { Project } from '../../utils/types/dashboard'
+import { MockFactory } from '../../../../__mocks__/mockFactory'
+import { Project } from '../../../utils/types/dashboard'
 import { faker } from '@faker-js/faker'
 import { QueryClient, QueryClientProvider } from 'react-query'
 

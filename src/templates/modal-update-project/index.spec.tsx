@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ModalUpdateProject } from '.'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useUpdateProject } from '../../hooks/useProject'
 
@@ -88,7 +88,7 @@ describe('<ModalUpdateProject/>', () => {
     )
 
     expect(await screen.findByText('Update project')).toBeInTheDocument()
-    userEvent.hover(await hover)
+    await act(async () => userEvent.hover(await hover))
     expect(await hoverText).toBeInTheDocument()
   })
 })

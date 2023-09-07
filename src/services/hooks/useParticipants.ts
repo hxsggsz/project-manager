@@ -1,7 +1,7 @@
-import { api } from '../lib/api'
 import { getCookie } from 'cookies-next'
 import { useQuery } from 'react-query'
 import { Participants } from './types/participants'
+import { api } from '../../lib/api'
 
 const token = getCookie('token')
 

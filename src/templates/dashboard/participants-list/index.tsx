@@ -1,9 +1,9 @@
-import { Participants } from '../../hooks/types/participants'
-import { api } from '../../lib/api'
+import { api } from '../../../lib/api'
 import * as HoverCard from '@radix-ui/react-hover-card'
 import { getCookie } from 'cookies-next'
 import Image from 'next/image'
 import { ReactNode, useEffect, useState } from 'react'
+import { Participants } from '../../../services/hooks/types/participants'
 
 const token = getCookie('token')
 

@@ -1,10 +1,10 @@
 import { ParticipantsList } from '.'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { api } from '../../lib/api'
+import { api } from '../../../lib/api'
 import MockAdapter from 'axios-mock-adapter'
-import { Participants } from '../../hooks/types/participants'
 import { faker } from '@faker-js/faker'
+import { Participants } from '../../../services/hooks/types/participants'
 
 class ResizeObserver {
   observe() {}
